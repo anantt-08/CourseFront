@@ -13,8 +13,8 @@ const ErrorS = () => {
                         type="button"
                         color="white"
                         gradient="blue"
-                        rounded="true"
-                        outline="true"
+                        rounded={true}
+                        outline={true}
                         className="rounded-circle"
                       >
                         Home Page

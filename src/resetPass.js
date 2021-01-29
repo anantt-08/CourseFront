@@ -1,28 +1,24 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { withRouter } from 'react-router-dom';
 
-export default class ResetPassword extends Component {
+class ResetPass extends Component {
     constructor(props) {
         super(props);
-        this.state = { linkDate:"",email:"",password: "",confirm_password: "", errors: {} };
+        this.state = { email:"",password: "",confirm_password: "", errors: {} };
     }
-    componentDidMount() {
-        let slugParam = this.props.match.params.slug;
-        let splitSlug=slugParam.split("+++");
-        let reqDate=splitSlug[0];
-        let email=splitSlug[1];
-        console.log(reqDate);
-        console.log(email);
-        this.setState({email:email,linkDate:reqDate});
-        let date1 = new Date(reqDate);
-        let currentDate = new Date();
-        let differenceinMS = currentDate - date1
-        if (differenceinMS > 3600000) {
-            NotificationManager.error("Link Not Valid link will be valid for 15 min.Please sent the reset link Again");
-            this.props.history.push("/login");
+     componentDidMount(){
+         if(JSON.parse(localStorage.getItem("user")).admin){
+            this.props.history.replace("/admin");
+         }
+         else if(JSON.parse(localStorage.getItem("user")).canlogin){
+           this.props.history.replace("/user");
         }
-    }
+         this.setState({
+             email:JSON.parse(localStorage.getItem("user")).email
+         })
+     }
     handleInput = e => {
         e.preventDefault();
         const name = e.target.name;
@@ -35,13 +31,24 @@ export default class ResetPassword extends Component {
             NotificationManager.warning("Email is Required");
             return false;
         }
-        // const data = { email: this.state.email, };
-        // console.log(data)
+        if (this.state.password !== this.state.confirm_password) {
+            NotificationManager.warning("Password Must Be same");
+            return false;
+        }
         axios
-            .post("http://localhost:9000/api/users/updatePassword", this.state)
+            .post("http://localhost:9000/api/users/updatePass", this.state)
             .then(result => {
                 NotificationManager.success(result.data.msg);
             })
+            .then(r=>{
+                setTimeout(() => {
+                 NotificationManager.listNotify.forEach(n => NotificationManager.remove({ id: n.id }));
+                 let storage=JSON.parse(localStorage.getItem("user"))
+                  storage.canlogin=true
+                 localStorage.setItem("user",JSON.stringify(storage)) 
+                 this.props.history.replace("/user");
+                }, 1000);
+             })
             .catch(err => {
                 if (err.response && err.response.status === 400)
                     NotificationManager.error(err.response.data.msg);
@@ -83,3 +90,6 @@ export default class ResetPassword extends Component {
         )
     }
 }
+
+
+export default withRouter(ResetPass);

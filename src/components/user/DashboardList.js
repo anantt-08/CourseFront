@@ -5,16 +5,13 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Label from '@material-ui/icons/ShoppingCartOutlined';
 import Arrow from '@material-ui/icons/PlayArrowOutlined';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import Register from './Register';
-import Hey from "../../hey";
 import  Spinner from "../../spinner";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Divider from '@material-ui/core/Divider';
+import Hey from "../../hey";
 const useTreeItemStyles = makeStyles((theme) => ({
     root: {
       color: theme.palette.text.secondary,
@@ -60,7 +57,6 @@ const useTreeItemStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(3),
       fontSize: "29px",
     },
-
     labelText: {
       fontWeight: 'inherit',
       flexGrow: 1,
@@ -117,7 +113,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
     },
   });
  
-export default function DashboardList(props)  {
+export default function DashboardListUser(props)  {
     const classes = useStyles();
 
 const handleClick=(value)=>{
@@ -128,17 +124,16 @@ props.handleDrawer()
  return(   
     <TreeView
     className={classes.root}
-    //defaultExpanded={['3']}
     defaultCollapseIcon={<ArrowDropDownIcon />}
     defaultExpandIcon={<ArrowRightIcon />}
     defaultEndIcon={<div style={{ width: 24 }} />}
   > 
-     <StyledTreeItem nodeId="100" labelText="Register" labelIcon={DashboardIcon}>
+     <StyledTreeItem nodeId="100" labelText="XYZ" labelIcon={DashboardIcon} >
       <StyledTreeItem
         nodeId="5"
         labelText="ADD User"
-        labelIcon={VpnKeyIcon}
-        onClick={()=>handleClick(<Register />)} 
+        labelIcon={Arrow}
+        onClick={()=>handleClick(<Spinner />)} 
         color="#1a73e8"
         bgColor="#e8f0fe"
       />
@@ -146,17 +141,19 @@ props.handleDrawer()
         nodeId="6"
         labelText="Display"
         labelIcon={Arrow}
-        onClick={()=>handleClick(<Spinner />)} 
+        onClick={()=>handleClick(<Hey />)} 
         color="#e3742f"
         bgColor="#fcefe3"
       />
        </StyledTreeItem> 
+     
+      {/*   
         <StyledTreeItem nodeId="200" labelText="XYZ" labelIcon={Label}>
       <StyledTreeItem
         nodeId="7"
         labelText="Add"
-        labelIcon={VpnKeyIcon}
-        onClick={()=>handleClick(<Hey/>)} 
+        labelIcon={Arrow}
+        onClick={()=>handleClick(<Spinner/>)} 
         color="#1a73e8"
         bgColor="#e8f0fe"
       />
@@ -169,7 +166,6 @@ props.handleDrawer()
         bgColor="#fcefe3"
       />
        </StyledTreeItem>
-      {/* 
        <StyledTreeItem nodeId="300" labelText="Model" labelIcon={Label}>
       <StyledTreeItem
         nodeId="9"

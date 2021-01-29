@@ -9,10 +9,13 @@ const GuestRoute = ({ component: Component, ...rest }) => {
       render={props =>
         !rest.loggedIn ? (
           <Component {...props} />
-        ) : (
+        ) : 
+        (
           <Redirect
             to={{
-              pathname:  rest.user.admin ? "/admin":"/user",
+              pathname:  JSON.parse(localStorage.getItem("user")).admin ? "/admin": (
+                JSON.parse(localStorage.getItem("user")).canlogin ? "/user" : "/reset"
+              ),
               state: { from: props.location }
             }}
           />

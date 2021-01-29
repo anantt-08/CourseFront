@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
+
 import axios from "axios";
 import {
   NotificationContainer,
@@ -65,11 +67,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 export default function AdminLogin(props) {
+  let history = useHistory();
   const classes = useStyles();
   const [email,setemail]=useState('')
   const [password,setpassword]=useState('')
   const dispatch = useDispatch()
-  const handleForm = () => {
+  const handleForm = (e) => {
+    //console.log("home",history)
+    e.preventDefault();
     if (email === "" || password === "") {
       NotificationManager.warning("Email And Password Required");
       return false;
@@ -81,18 +86,22 @@ export default function AdminLogin(props) {
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("user", JSON.stringify(result.data.user));
         NotificationManager.success(result.data.msg);
-
         setTimeout(() => {
           dispatch({ type: "SET_LOGIN", payload: JSON.stringify(result.data.user) })
           NotificationManager.listNotify.forEach((n) =>
             NotificationManager.remove({ id: n.id })
           );
+          if(result.data.user.canlogin){
           if (result.data.user.admin) {
-            props.history.push("/admin");
+            history.push("/admin");
           } else {
-            props.history.push("/user");
+            history.push("/user");
           }
-        }, 800);
+        }
+        else{
+          history.push("/reset");
+        }
+        }, 1000);
       })
       .catch((err) => {
         if (
@@ -106,6 +115,7 @@ export default function AdminLogin(props) {
   
   return (
     <>
+    
     <NotificationContainer />
     <Grid container component="main" className={classes.root}>
   <CssBaseline />
@@ -118,7 +128,7 @@ export default function AdminLogin(props) {
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-    
+      <form  onSubmit={handleForm}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -144,16 +154,15 @@ export default function AdminLogin(props) {
           onChange={(e)=>setpassword(e.target.value)}
         />
         <Button
-          
+          type="submit"
           fullWidth
           variant="contained"
           color="primary"
           className={classes.submit}
-          onClick={()=>handleForm()}
         >
           Sign In
         </Button>
-       
+</form>
         <Grid container 
          >
           <Grid item md  className={classes.forget}>

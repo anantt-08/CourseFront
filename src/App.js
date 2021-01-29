@@ -1,25 +1,74 @@
-import React from 'react';
-import AdminLogin from "./home";
+import React, { Suspense, lazy } from 'react';
 import './App.css';
-import ErrorS from "./components/ErrorPage";
 import { BrowserRouter as Router,Route,Redirect , Switch} from "react-router-dom";
 import GuestRoute from "./components/GuestRoute";
 import AuthRoute from "./components/AuthRoute";
 import PrivateRoute from "./components/PrivateRoute";
-import Dashboard from "./components/admin/Dashboard";
-import ForgetPassword from './forgetpassword';
-import ResetPassword from './resetPassword';
+import Spinner from "./spinner";
+
+const ErrorS = lazy(() => import("./components/ErrorPage"));
+const AdminLogin = lazy(() => import("./home"));
+const DashboardUser = lazy(() => import("./components/user/Dashboard"));
+const Dashboard = lazy(() => import("./components/admin/Dashboard"));
+const  ForgetPassword= lazy(() => import("./forgetpassword"));
+const  ResetPassword= lazy(() => import("./resetPassword"));
+const  ResetPass= lazy(() => import("./resetPass"));
+
+const Error = () => (
+  <Suspense fallback={<Spinner />}>
+    <ErrorS />
+  </Suspense>
+);
+
+const adminLogin = () => (
+  <Suspense fallback={<Spinner />}>
+    < AdminLogin/>
+  </Suspense>
+);
+
+const dashboard = () => (
+  <Suspense fallback={<Spinner />}>
+    < Dashboard/>
+  </Suspense>
+);
+
+const dashboarduser = () => (
+  <Suspense fallback={<Spinner />}>
+    < DashboardUser/>
+  </Suspense>
+);
+
+const  forgetPassword= () => (
+  <Suspense fallback={<Spinner />}>
+    < ForgetPassword/>
+  </Suspense>
+);
+
+const resetPassword = () => (
+  <Suspense fallback={<Spinner />}>
+    <ResetPassword />
+  </Suspense>
+);
+
+const resetP = () => (
+  <Suspense fallback={<Spinner />}>
+    <ResetPass />
+  </Suspense>
+);
+
+
 function App() {
   return (
     <div>
       <Router>
       <Switch>  
-        <Route exact component={AdminLogin} path="/" />
-          <GuestRoute path="/forget-password" exact component={ForgetPassword} />
-          <GuestRoute path="/change-password/:slug" component={ResetPassword} />
-          {/* <AuthRoute path="/user" exact component={} /> */}
-          <PrivateRoute path="/admin" exact component={Dashboard} />
-        <Route path ="/error"  component={ ErrorS  } />
+        <GuestRoute exact component={adminLogin} path="/" />
+          <GuestRoute path="/forget-password" exact component={forgetPassword} />
+          <GuestRoute path="/change-password/:slug" component={resetPassword} />
+          <AuthRoute path="/user" exact component={dashboarduser} />
+          <AuthRoute path="/reset" exact component={resetP} />
+          <PrivateRoute path="/admin" exact component={dashboard} />
+        <Route path ="/error"  component={ Error  } />
           <Redirect to="/error"/>
         </Switch> 
       </Router>

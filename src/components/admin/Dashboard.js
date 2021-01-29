@@ -3,29 +3,24 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-//import DashboardList from "./DashboardList";
+import DashboardList from "./DashboardList";
 import Avatar from '@material-ui/core/Avatar';
-
-import Box from '@material-ui/core/Box';
+import Register from "./Register";
+import { Icon} from '@iconify/react';
+import beamingFaceWithSmilingEyes from '@iconify-icons/emojione/beaming-face-with-smiling-eyes';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
 
-function Copyright() {
-  return (
-   <h1>Hey</h1>
-  );
-}
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 const drawerWidth = 240;
 
@@ -71,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    fontFamily: ' Verdana, Arial, Helvetica, sans-serif',
   },
   drawerPaper: {
     position: 'relative',
@@ -116,7 +112,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(props) {
   const classes = useStyles();
   const [getAdmin,setAdmin]=useState(null)
+  const [getView,setView]=useState(<Register />) 
   const [open, setOpen] = React.useState(true);
+  const dispatch = useDispatch();
+  let history = useHistory();
+  // console.log("dash",history)
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -124,38 +124,45 @@ export default function Dashboard(props) {
     setOpen(false);
   };
 
-  const handleView=(value)=>{
-//     if(value==50)
-//     {
-//       localStorage.clear()
-//       props.history.replace({pathname:'/adminlogin'})
-//     }
-//     else{
-//  setView(value)
-//     }
+  const handleDrawer  =() =>{
+    setOpen(true);
+  }
 
+  const handleView=(value)=>{
+    if(value===50)
+    {
+      localStorage.clear();
+
+      NotificationManager.success("Logout Successfull");
+      setTimeout(() => {
+        dispatch({ type: "SET_LOGOUT" })
+         NotificationManager.listNotify.forEach((n) =>
+            NotificationManager.remove({ id: n.id }) )
+     }, 800);
+    }
+    else{
+ setView(value)
+    }
 
   }
   const checkStorage=()=>{
-  //  if(!localStorage.getItem("ADMIN"))
-  //  {
-  //   props.history.replace({pathname:'\adminlogin'})
-  //  }
-  // else{
-  //   var data=JSON.parse(localStorage.getItem("ADMIN"))
-  //    console.log(data)
-  //    setAdmin(data)
-
-  // }
+   if(!localStorage.getItem("user"))
+   {
+    history.replace({pathname:'/'})
+   }
+  else{
+    var data=JSON.parse(localStorage.getItem("user"))
+     console.log(data)
+     setAdmin(data)
+  }
 
   }
-  useEffect(function(){
-   checkStorage()   
 
-  },[])
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+  useEffect(() => { 
+    checkStorage();  }, [])
   return (
+    <>
+    <NotificationContainer />
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -170,10 +177,13 @@ export default function Dashboard(props) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-          {getAdmin?getAdmin[0].adminname:<></>
-          }
+           Welcome : &nbsp;
+         {getAdmin?getAdmin.name:<></>
+          } &nbsp;
+          <Icon  width={27} height={27} icon={beamingFaceWithSmilingEyes}  />
           </Typography>
           <IconButton color="inherit">
+          {getAdmin?<Avatar alt="Admin" src="https://png.pngtree.com/png-vector/20191122/ourmid/pngtree-beautiful-admin-roles-glyph-vector-icon-png-image_2002847.jpg" className={classes.large} />:<></>}
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -185,12 +195,17 @@ export default function Dashboard(props) {
         open={open}
       >
         <div className={classes.toolbarIcon}>
+         <span style={{fontWeight:"bold",fontSize:"17px",
+  fontFamily: " Times, Times New Roman, Georgia, serif",padding:"26px 0px 26px 0px"}}><InboxIcon />{`ADMIN Dashboard`} </span> 
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
-     
+    
+         
+        <DashboardList handleDrawer={handleDrawer} handleView={handleView}/>
+       
         <Divider />
          
       </Drawer>
@@ -198,11 +213,10 @@ export default function Dashboard(props) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>         
 
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+        {getView}
         </Container>
       </main>
     </div>
+    </>
   );
 }
