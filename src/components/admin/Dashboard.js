@@ -25,6 +25,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),
@@ -33,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   toolbar: {
-    
     paddingRight: 24, // keep right padding when drawer closed
+    '@media (max-width: 1000px)' : {
+      
+    }
   },
   toolbarIcon: {
     display: 'flex',

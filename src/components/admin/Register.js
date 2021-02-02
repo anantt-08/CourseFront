@@ -40,7 +40,6 @@ mobile:this.state.mobile
       }
     })
     .then(result => {
-      NotificationManager.success(result.data.msg);
       this.setState({
         name: "",
       email: "",
@@ -48,6 +47,7 @@ mobile:this.state.mobile
       description:"",
 mobile:""
       })
+      NotificationManager.success(result.data.msg);
     })
     .then(r=>{
        setTimeout(() => {
@@ -90,6 +90,7 @@ mobile:""
                     label="Enter Name"
                     icon="user"
                     group
+                    value={this.state.name}
                     type="text"
                      name="name" onChange={this.handleInput}
                   />
@@ -99,6 +100,7 @@ mobile:""
                     label="Enter Email"
                     icon="envelope"
                     group
+                    value={this.state.email}
                     type="email"
                     name="email" onChange={this.handleInput} 
                   />
@@ -110,6 +112,7 @@ mobile:""
                     label="Mobile Number"
                     icon="phone"
                     group
+                    value={this.state.mobile}
                     type="Number"
                      name="mobile" onChange={this.handleInput}
                   />
@@ -138,6 +141,7 @@ mobile:""
                     label="Description"
                     icon="user-md"
                     group
+                    value={this.state.description}
                     type="text"
                      name="description" onChange={this.handleInput}
                   /> 
