@@ -92,7 +92,7 @@ export default class Userlist extends Component{
         dataField: "email",
         text: "Email",
         headerStyle: (colum, colIndex) => {
-          return { 'whiteSpace': 'nowrap', width: '200px' , wordWrap:'break-word'};
+          return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word'};
       },
       },
       {
@@ -138,43 +138,7 @@ export default class Userlist extends Component{
        <label htmlFor={row._id}></label>
    </div>
         ),
-      },
-      {
-        dataField: "operation",
-        text: "Delete",
-        style: {
-          textAlign: 'center',
-        },
-        editable: false,
-        formatter: (cellContent, row) => (
-          <div>
-            <Fab
-              color="secondary"
-              aria-label="delete"
-              size="small"
-              onClick={() => {
-                this.dialog.show({
-                  title: "Confirmation",
-                  body: "Are you sure Want to Permanently Delete Data?",
-                  actions: [
-                    Dialog.CancelAction(),
-                    Dialog.OKAction(() => {
-                      this.deleteData(row._id);
-                    })
-                  ],
-                  bsSize: "small",
-                  onHide: (dialog) => {
-                    dialog.hide();
-                    console.log("closed by clicking background.");
-                  },
-                });
-              }}
-            >
-              <FaRegTrashAlt />
-            </Fab>
-          </div>
-        ),
-      },
+      }
     ];
 
     const pagination = paginationFactory({

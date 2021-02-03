@@ -6,6 +6,7 @@ import Drawer from '@material-ui/core/Drawer';
 import DashboardListUser from "./DashboardList";
 import Avatar from '@material-ui/core/Avatar';
 import  Spinner from "../../spinner";
+import UserModal from "./userModal";
 import { Icon} from '@iconify/react';
 import beamingFaceWithSmilingEyes from '@iconify-icons/emojione/beaming-face-with-smiling-eyes';
 import AppBar from '@material-ui/core/AppBar';
@@ -112,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DashboardUser(props) {
   const classes = useStyles();
   const [getAdmin,setAdmin]=useState(null)
-  const [getView,setView]=useState(<Spinner />) 
+  const [getView,setView]=useState(<UserModal />) 
   const [open, setOpen] = React.useState(true);
   const dispatch = useDispatch();
   let history = useHistory();
@@ -157,6 +158,20 @@ export default function DashboardUser(props) {
   }
 
   }
+  
+     // Update of sidebar state
+     useEffect(() => {
+      const updateWindowWidth = () => {
+        if (window.innerWidth < 900) setOpen(false);
+        else setOpen(true)
+      }
+  
+      window.addEventListener('resize', updateWindowWidth);
+  
+      return () => window.removeEventListener('resize', updateWindowWidth);
+    }, [open]);
+    
+
 
   useEffect(() => { 
     checkStorage();  }, [])

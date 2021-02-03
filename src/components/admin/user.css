@@ -19,7 +19,10 @@ bekar kafi jalldh
 }    
 }
     .banUserDiv {
-        width: 120px; 	height: 40px;	background: rgb(12, 12, 12);	border-radius: 50px;	position: relative;
+        width: 120px; 	height: 40px;	background-color:rgb(83, 83, 83);	border-radius: 50px;	position: relative;
+    }
+    .banUserDiv:hover {
+       	background-color:rgb(12, 12, 12);
     }
     .banUserDiv:before {
         content: 'Yes';	position: absolute;	top: 12px;	left: 13px;	height: 2px;	color: #26ca28;	font-size: 16px;
@@ -36,8 +39,11 @@ bekar kafi jalldh
     }
     @media   only screen and (max-width: 1125px)  and (min-width: 700px){
         .banUserDiv {
-            width: 100px; 	height: 40px;	background: rgb(12, 12, 12);	border-radius: 50px;	position: relative;
-        }
+        width: 100px; 	height: 40px;	background-color:rgb(83, 83, 83);	border-radius: 50px;	position: relative;
+    }
+    .banUserDiv:hover {
+       	background-color:rgb(12, 12, 12);
+    }
         .banUserDiv:before {
             content: 'Yes';	position: absolute;	top: 12px;	left: 12px;	height: 2px;	color: #26ca28;	font-size: 15px;
         }
@@ -49,7 +55,29 @@ bekar kafi jalldh
             cursor: pointer;	position: absolute;	top: 9px;	z-index: 1;	left: 10px;	background: #ddd;
         }
         .banUserDiv input[type=checkbox]:checked + label {
-            left: 47px;	background: #26ca28;
+            left: 48px;	background: #26ca28;
+        }  
+     }   
+     
+    @media   only screen  and (max-width: 800px){
+        .banUserDiv {
+            width: 80px; 	height: 40px;	background-color:rgb(83, 83, 83);	border-radius: 50px;	position: relative;
+        }
+        .banUserDiv:hover {
+               background-color:rgb(12, 12, 12);
+        }
+        .banUserDiv:before {
+            content: 'Yes';	position: absolute;	top: 12px;	left: 12px;	height: 2px;	color: #26ca28;	font-size: 13px;
+        }
+        .banUserDiv:after {
+            content: 'No';	position: absolute;	top: 12px; left: 54px;	height: 2px;	color: #fff;	font-size: 13px;
+        }
+        .banUserDiv label {
+            display: block;	width: 37px;	height: 20px;	border-radius: 50px;	transition: all .5s ease;
+            cursor: pointer;	position: absolute;	top: 9px;	z-index: 1;	left: 10px;	background: #ddd;
+        }
+        .banUserDiv input[type=checkbox]:checked + label {
+            left: 37px;	background: #26ca28;
         }  
      }   
 .modal{

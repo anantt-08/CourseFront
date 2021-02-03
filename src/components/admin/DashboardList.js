@@ -16,13 +16,17 @@ import Register from './Register';
 import Userlist from "./userlist";
 import  Spinner from "../../spinner";
 import Divider from '@material-ui/core/Divider';
-import UserModal from "../userModal";
+import UserModal from "./userModal";
 const useTreeItemStyles = makeStyles((theme) => ({
-    root: {
+  root: {
       color: theme.palette.text.secondary,
       '&:hover > $content': {
         backgroundColor: theme.palette.action.hover,
       },
+      '& .makeStyles-drawerPaperClose-11' :{
+        width: '72px'
+    } 
+      ,
       '&:focus > $content, &$selected > $content': {
        backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
         color: 'var(--tree-view-color)',
@@ -66,7 +70,9 @@ const useTreeItemStyles = makeStyles((theme) => ({
     labelText: {
       fontWeight: 'inherit',
       flexGrow: 1,
-    },
+    }
+
+
   }));
   
   function StyledTreeItem(props) {

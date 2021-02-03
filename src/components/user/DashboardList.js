@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import UserModal from "./userModal";
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
@@ -127,7 +129,17 @@ props.handleDrawer()
     defaultCollapseIcon={<ArrowDropDownIcon />}
     defaultExpandIcon={<ArrowRightIcon />}
     defaultEndIcon={<div style={{ width: 24 }} />}
+    defaultSelected={['300']}
   > 
+   <StyledTreeItem
+          nodeId="300"
+          labelText="Edit Details"
+          labelIcon={SupervisorAccountIcon}
+          
+        onClick={()=>handleClick(<UserModal />)}
+        color="#a250f5"
+        bgColor="#f3e8fd"
+        /> 
      <StyledTreeItem nodeId="100" labelText="XYZ" labelIcon={DashboardIcon} >
       <StyledTreeItem
         nodeId="5"
@@ -166,7 +178,7 @@ props.handleDrawer()
         bgColor="#fcefe3"
       />
        </StyledTreeItem>
-       <StyledTreeItem nodeId="300" labelText="Model" labelIcon={Label}>
+       <StyledTreeItem nodeId="400" labelText="Model" labelIcon={Label}>
       <StyledTreeItem
         nodeId="9"
         labelText="Add Model"
@@ -188,7 +200,7 @@ props.handleDrawer()
        </StyledTreeItem>
    
 
-       <StyledTreeItem nodeId="400" labelText="Product" labelIcon={Label}>
+       <StyledTreeItem nodeId="500" labelText="Product" labelIcon={Label}>
       <StyledTreeItem
         nodeId="11"
         labelText="Add Product"

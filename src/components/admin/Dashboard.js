@@ -7,6 +7,8 @@ import DashboardList from "./DashboardList";
 import Avatar from '@material-ui/core/Avatar';
 import Register from "./Register";
 import { Icon} from '@iconify/react';
+import json2mq from 'json2mq';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import beamingFaceWithSmilingEyes from '@iconify-icons/emojione/beaming-face-with-smiling-eyes';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,6 +26,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 
 const drawerWidth = 240;
 
+
 const useStyles = makeStyles((theme) => ({
   
   large: {
@@ -35,9 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
-    '@media (max-width: 1000px)' : {
-      
-    }
+    
   },
   toolbarIcon: {
     display: 'flex',
@@ -120,6 +121,12 @@ export default function Dashboard(props) {
   const dispatch = useDispatch();
   let history = useHistory();
   // console.log("dash",history)
+  const matches = useMediaQuery(
+    json2mq({
+      maxWidth: 900,
+    }),
+  );
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -160,7 +167,18 @@ export default function Dashboard(props) {
   }
 
   }
+   // Update of sidebar state
+   useEffect(() => {
+    const updateWindowWidth = () => {
+      if (window.innerWidth < 900) setOpen(false);
+      else setOpen(true)
+    }
 
+    window.addEventListener('resize', updateWindowWidth);
+
+    return () => window.removeEventListener('resize', updateWindowWidth);
+  }, [open]);
+  
   useEffect(() => { 
     checkStorage();  }, [])
   return (

@@ -18,8 +18,10 @@ import "react-toggle/style.css"
 class UserModal extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            _id: JSON.parse(localStorage.getItem('user'))._id,
+        this.state = this.initialState
+    }
+     initialState={
+        _id: JSON.parse(localStorage.getItem('user'))._id,
             name: JSON.parse(localStorage.getItem('user')).name,
             email: JSON.parse(localStorage.getItem('user')).email,
             mobile: JSON.parse(localStorage.getItem('user')).mobile,
@@ -28,7 +30,13 @@ class UserModal extends Component {
             currentPassword: '',
             password: '',
             password_confirmation: ''
-        }
+    }
+    reset =  e =>{
+        setTimeout(() => {
+            NotificationManager.success("Reset to Normal")
+            this.setState(this.initialState)
+        
+        }, 400);
     }
     handleInput = e => {
         e.preventDefault();
@@ -39,6 +47,7 @@ class UserModal extends Component {
     }
     handleForm = event => {
         event.preventDefault();
+        console.log(this.state.description)
         if(this.state.currentPassword==='')
         {
             NotificationManager.warning("Please Enter Current Password");
@@ -58,7 +67,12 @@ class UserModal extends Component {
             .then(result => {
                 localStorage.setItem("user", JSON.stringify(result.data.updatedData));
                 if (result.data.success) NotificationManager.success(result.data.msg);
-                this.setState({currentPassword:""})
+                this.setState(prevState =>{
+                    return{
+                         prevState:this.initialState
+                    }
+                 })
+                 
             })
             .catch(erro => {
                 this.setState({ errors: erro })
@@ -69,20 +83,21 @@ class UserModal extends Component {
             });
     }
     render() {
-        console.log("hi")
         return (
             <div>
                 <NotificationContainer />
-                <button onClick={this.handleEvent} className="btn" style={{ background: "rgb(3, 182, 252)",color:"white" }} data-toggle="modal" data-target="#myModal" ><i className="fa fa-pencil-square-o fa-2x mx-0 my-0 px-0 py-0" aria-hidden="true" style={{color:"yellow"}}></i> Edit Details</button>
-                <div className="modal" id="myModal">
-                    <div className="modal-dialog modal-lg">
-                        <div className="modal-content">
+                {/* <button onClick={this.handleEvent} className="btn" style={{ background: "rgb(3, 182, 252)",
+                color:"white" }} data-toggle="modal" data-target="#myModal" >
+                    <i className="fa fa-pencil-square-o fa-2x mx-0 my-0 px-0 py-0" aria-hidden="true" 
+                    style={{color:"yellow"}}></i> Edit Details</button> */}
+                <div>
+                    <div>
+                        <div>
                             <form onSubmit={this.handleForm}  >
-                                <div className="modal-header">
-                                    <h4 className="modal-title">Update User Details</h4>
-                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <div>
+                                    <h4 className="modal-title" style={{textAlign:"center",justifyContent:"center"}}>Update User Details</h4>
                                 </div>
-                                <div className="modal-body">
+                                <div>
 
                                     <div className="row">
                                         <div className="col-sm-6" >
@@ -105,8 +120,8 @@ class UserModal extends Component {
                                         </div>
                                          <div className="col-sm-6" >
                                             <div className="form-group">
-                                                <label >Occupation</label>
-                                                <input type="text" className="form-control" name="description" value={this.state.occupation} onChange={this.handleInput} placeholder="description" />
+                                                <label >Description</label>
+                                                <input type="text" className="form-control" name="description" value={this.state.description} onChange={this.handleInput} placeholder="description" />
                                             </div>
                                         </div>
                                         <div className="col-sm-6" >
@@ -121,7 +136,7 @@ class UserModal extends Component {
                                                 <Toggle
                                                     name="changePassword"
                                                     id='changePassword'
-                                                    defaultChecked={this.state.changePassword}
+                                                    checked={this.state.changePassword}
                                                     onChange={this.handleToggleInput} />
                                             </div>
                                         </div>
@@ -145,9 +160,9 @@ class UserModal extends Component {
 
                                     </div>
                                 </div>
-                                <div className="modal-footer">
-                                    <input type="submit" className="btn btn-primary" value="Submit" />
-                                    <button type="button" className="btn btn-danger" data-dismiss="modal" >Close</button>
+                                <div style={{display:"flex",justifyContent:"center"}}>
+                                    <input type="submit" className="btn btn-primary" value="Confirm" />
+                                    <button type="button" className="btn btn-danger" value="Cancel" onClick={this.reset}>Reset</button>
                                 </div>
                             </form>
                         </div>

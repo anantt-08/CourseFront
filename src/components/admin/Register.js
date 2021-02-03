@@ -123,7 +123,7 @@ mobile:""
         id="date"
         label="Birthday"
         type="date"
-        style={{width: "400", marginLeft: "7px",
+        style={{ marginLeft: "7px",
         marginTop: "19px"}}
         onChange={this.getPickerValue} 
         value={this.state.birth || ""}
