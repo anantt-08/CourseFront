@@ -69,9 +69,13 @@ class UserModal extends Component {
                 if (result.data.success) NotificationManager.success(result.data.msg);
                 this.setState(prevState =>{
                     return{
-                         prevState:this.initialState
+                         ...prevState,
+                         changePassword: false,
+                         currentPassword: '',
+                         password: '',
+                         password_confirmation: ''
                     }
-                 })
+                 })                 
                  
             })
             .catch(erro => {
@@ -95,7 +99,7 @@ class UserModal extends Component {
                         <div>
                             <form onSubmit={this.handleForm}  >
                                 <div>
-                                    <h4 className="modal-title" style={{textAlign:"center",justifyContent:"center"}}>Update User Details</h4>
+                                    <h4  style={{textAlign:"center",justifyContent:"center"}}>Update User Details</h4>
                                 </div>
                                 <div>
 

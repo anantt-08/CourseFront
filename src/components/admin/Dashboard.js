@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+//clsx for creating classsname Conditionally using boolean and Strings
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,6 +36,34 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     display: 'flex',
+    '& .makeStyles-drawerPaperClose-29': {
+      width: '72px'
+  },
+  
+  '& .makeStyles-drawerPaperClose-49': {
+    width: '72px'
+},
+
+    '& .makeStyles-drawerPaperClose-11': {
+      width: '72px'
+  },
+  '& .makeStyles-drawerPaperClose-87': {
+    width: '72px'
+},
+'& .makeStyles-drawerPaperClose-50': {
+  width: '72px'
+},
+'& .makeStyles-drawerPaperClose-89': {
+  width: '72px'
+},
+'& .makeStyles-drawerPaperClose-128': {
+  width: '72px'
+},
+
+'& .makeStyles-drawerPaperClose-23': {
+  width: '72px'
+},
+
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -92,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9),
     },
   },
-  appBarSpacer: theme.mixins.toolbar,
+  appBarSpacer:theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: '100vh',
@@ -101,6 +130,14 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    '&.makeStyles-container-14' :{
+      paddingTop: '0px',
+      paddingBottom: '0px',
+  },
+  '&.makeStyles-container-53' :{
+    paddingTop: '0px',
+    paddingBottom: '0px',
+},
   },
   paper: {
     padding: theme.spacing(2),
@@ -111,6 +148,11 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  yo:{
+    paddingLeft: '0px', 
+    paddingRight: '0px',
+    marginTop:"20px",
+  }
 }));
 
 export default function Dashboard(props) {
@@ -167,20 +209,21 @@ export default function Dashboard(props) {
   }
 
   }
+  const updateWindowWidth = () => {
+    if (window.innerWidth < 900) setOpen(false);
+    else setOpen(true);
+  }
    // Update of sidebar state
    useEffect(() => {
-    const updateWindowWidth = () => {
-      if (window.innerWidth < 900) setOpen(false);
-      else setOpen(true)
-    }
 
     window.addEventListener('resize', updateWindowWidth);
-
     return () => window.removeEventListener('resize', updateWindowWidth);
   }, [open]);
   
   useEffect(() => { 
-    checkStorage();  }, [])
+    checkStorage();  
+    updateWindowWidth();
+  }, [])
   return (
     <>
     <NotificationContainer />
@@ -232,8 +275,9 @@ export default function Dashboard(props) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>         
-
+        {/* classes={{root:... , contextprimary:  ... }}  or by METHOD OVERRIDES! */}
+        <Container maxWidth="lg" className={classes.container} classes={{root:classes.yo}}>         
+        
         {getView}
         </Container>
       </main>

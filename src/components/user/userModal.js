@@ -8,7 +8,11 @@
 
 //     },[])
 
-import React, { Component } from 'react'
+import { MDBView } from "mdbreact";
+import "./user.css";
+import { withRouter } from 'react-router-dom';
+import React, { Component } from 'react';
+import Dialog from "react-bootstrap-dialog";
 import axios from 'axios';
 import { connect } from "react-redux";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -45,6 +49,33 @@ class UserModal extends Component {
     handleToggleInput=e=>{
         this.setState({ changePassword: e.target.checked ,password:'',password_confirmation:''})
     }
+    deleteuser=(id) =>{
+        const { history } = this.props;
+        const token = localStorage.getItem("token");
+        axios
+          .put(`http://localhost:9000/api/users/deleteaccount/${id}`,{delete:0}, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then((res) => {
+            NotificationManager.success(res.data.msg);
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+           setTimeout(() => {
+            this.props.logout();
+            NotificationManager.listNotify.forEach((n) =>
+              NotificationManager.remove({ id: n.id })
+              
+            );
+            history.replace("/")
+          }, 1000);
+          })
+
+          .catch((err) => {
+            NotificationManager.error(err.response.data.msg);
+          });
+      }
     handleForm = event => {
         event.preventDefault();
         console.log(this.state.description)
@@ -69,9 +100,13 @@ class UserModal extends Component {
                 if (result.data.success) NotificationManager.success(result.data.msg);
                 this.setState(prevState =>{
                     return{
-                         prevState:this.initialState
+                         ...prevState,
+                         changePassword: false,
+                         currentPassword: '',
+                         password: '',
+                         password_confirmation: ''
                     }
-                 })
+                 })   
                  
             })
             .catch(erro => {
@@ -86,18 +121,38 @@ class UserModal extends Component {
         return (
             <div>
                 <NotificationContainer />
-                {/* <button onClick={this.handleEvent} className="btn" style={{ background: "rgb(3, 182, 252)",
-                color:"white" }} data-toggle="modal" data-target="#myModal" >
-                    <i className="fa fa-pencil-square-o fa-2x mx-0 my-0 px-0 py-0" aria-hidden="true" 
-                    style={{color:"yellow"}}></i> Edit Details</button> */}
                 <div>
                     <div>
                         <div>
                             <form onSubmit={this.handleForm}  >
                                 <div  style={{textAlign:"center",justifyContent:"space-between",display:"flex"}}>
                                     <h4>Update User Details</h4>
-                                       
-                                    <button type="button" className="btn btn-danger" value="Cancel" onClick={this.reset}>Reset</button>
+                                       <MDBView hover zoom>
+                                       <img src="https://img.icons8.com/officel/60/000000/remove-user-male.png"  
+                                    style={{cursor:"pointer",
+                                    background:'red',
+                                    borderRadius:'50%'
+                                    }}
+                                    className="img-fluid"
+                                     onClick={() => {
+                                        this.dialog.show({
+                                          title: "Confirmation",
+                                          body: "Are you sure to Permanently Delete Account?",
+                                          actions: [
+                                            Dialog.CancelAction(),
+                                            Dialog.OKAction(() => {
+                                              this.deleteuser(this.state._id)
+                                            }),
+                                          ],
+                                          bsSize: "small",
+                                          onHide: (dialog) => {
+                                            dialog.hide();
+                                            console.log("closed by clicking background.");
+                                          },
+                                        });
+                                      }}
+                                      />
+  </MDBView>        
                                 </div>
                                 <div>
 
@@ -170,16 +225,21 @@ class UserModal extends Component {
                         </div>
                     </div>
                 </div>
+                <Dialog
+              ref={(component) => {
+                this.dialog = component;
+              }}
+            />
             </div>
         )
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        setLogin: user => dispatch({ type: "SET_LOGIN", payload: user })
+    logout: () => dispatch({ type: "SET_LOGOUT" })
     };
 };
-export default connect(
+export default withRouter(connect(
     null,
     mapDispatchToProps
-)(UserModal);
+)(UserModal));

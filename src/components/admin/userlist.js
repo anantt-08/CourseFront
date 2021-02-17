@@ -9,10 +9,11 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import { FaRegTrashAlt } from "react-icons/fa";
-import Fab from "@material-ui/core/Fab";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
+
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 export default class Userlist extends Component{
   constructor(props) {
@@ -20,12 +21,16 @@ export default class Userlist extends Component{
 
     this.state = {
       DATA: [],
-      loading: false
+      loading: false,
+      width:0,
+      height:0
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const token = localStorage.getItem("token");
+    window.addEventListener('resize', this.updateDimensions);
+    this.updateDimensions();
     axios
       .get("http://localhost:9000/api/users/userlist", {
         headers: {
@@ -49,7 +54,7 @@ export default class Userlist extends Component{
       })
       .then((res) => {
         NotificationManager.success(res.data.msg);
-        this.componentWillMount();
+        this.UNSAFE_componentWillMount();
       })
       .catch((err) => {
         NotificationManager.error(err.response.data.msg);
@@ -66,93 +71,297 @@ export default class Userlist extends Component{
       })
       .then((res) => {
         NotificationManager.success(res.data.msg);
-        this.componentWillMount();
+        this.UNSAFE_componentWillMount();
       })
       .catch((err) => {
         NotificationManager.error(err.response.data.msg);
       });
   }
-
-
+ 
+  updateDimensions = () => {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+    console.log(this.state.width)
+  };
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
   render() {
-
-    
-    const columns = [
+   
+//console.log(this.state.width)
+    const matches= (this.state.width>765) ? true:false 
+    const match= (this.state.width<660) ? false:true 
+    const columns = matches ? [
       {
         dataField: "_id",
         text: "Id",
         hidden: true,
-        editable: false,
+        editable: false
       },
       {
         dataField: "name",
         text: "UserName",
+        sort: true,
+        headerStyle: (colum, colIndex) => {
+          return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      },
+      
+        // style: (cell, row, rowIndex) => {
+        //  return {
+        //    backgroundColor: rowIndex % 2 === 0 ? 'red' : 'blue' 
+        //  }
+        // }
       },
       {
         dataField: "email",
         text: "Email",
         headerStyle: (colum, colIndex) => {
-          return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word'};
-      },
+          return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold"};
+      }
       },
       {
         dataField: "mobile",
         text: "MobileNo",
+        sort: true,
+        headerStyle: (colum, colIndex) => {
+          return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
       },
-            {
+      },
+     {
         dataField: "birth",
         text: "BirthDate",
+        headerStyle: (colum, colIndex) => {
+          return { fontWeight:"bold"};
       },
-      {
-        dataField: "type",
-        text: "Account Active?",
-        style: {
-          width: '70px',
-          textAlign:"center"
-        },
-        editable: false,
-        formatter: (cellContent, row) => (
-            <div className="banUserDiv">
-            <input type="checkbox" style={{display:"none"}}
-            id={row._id}
-            readOnly
-         checked={row.status}
-         onClick={() => {
-                this.dialog.show({
-                  title: "Sure?",
-                  body: "Are you sure Want to change Status?",
-                  actions: [
-                    Dialog.CancelAction(),
-                    Dialog.OKAction(() => {
-                      this.changeStatus(row._id,row.status);
-                    }),
-                  ],
-                  bsSize: "small",
-                  onHide: (dialog) => {
-                    dialog.hide();
-                    console.log("closed by clicking background.");
-                  },
-                });
-              }}
-       />
-       <label htmlFor={row._id}></label>
-   </div>
-        ),
       }
-    ];
-
-    const pagination = paginationFactory({
-  sizePerPage:4,
- sizePerPageList : [ {
-  text: '4', value: 4
-}, {
-  text: '8', value: 8
+    ,
+    {
+      dataField: "type",
+      text: "Active?",
+      headerStyle: (colum, colIndex) => {
+        return { fontWeight:"bold"};
+    },
+      style: {
+        width: '70px',
+        textAlign:"center"
+      },
+      editable: false,
+      formatter: (cellContent, row) => (
+         (!row.delete && !row.status) ? <></> : <div className="banUserDiv">
+          <input type="checkbox" style={{display:"none"}}
+          id={row._id}
+          readOnly
+       checked={row.status}
+       onClick={() => {
+              this.dialog.show({
+                title: "Sure?",
+                body: "Are you sure Want to change Status?",
+                actions: [
+                  Dialog.CancelAction(),
+                  Dialog.OKAction(() => {
+                    this.changeStatus(row._id,row.status);
+                  }),
+                ],
+                bsSize: "small",
+                onHide: (dialog) => {
+                  dialog.hide();
+                  console.log("closed by clicking background.");
+                },
+              });
+            }}
+     />
+     <label htmlFor={row._id}></label>
+  </div>  
+      ),
+    }
+      
+    ]
+:
+match ?
+[
+  {
+    dataField: "_id",
+    text: "Id",
+    hidden: true,
+    editable: false,
+  },
+  {
+    dataField: "name",
+    text: "UserName",
+    sort: true,
+    headerStyle: (colum, colIndex) => {
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+  },
+  },
+  {
+    dataField: "email",
+    text: "Email",
+    headerStyle: (colum, colIndex) => {
+      return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold"};
+  },
+  sort: true
+  },
+  {
+    dataField: "mobile",
+    text: "MobileNo",
+    sort: true,
+    headerStyle: (colum, colIndex) => {
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+  },
+  }
+,
+{
+  dataField: "type",
+  text: "Active?",
+  headerStyle: (colum, colIndex) => {
+    return { fontWeight:"bold"};
 },
-{text: '12', value: 12
+  style: {
+    width: '70px',
+    textAlign:"center"
+  },
+  editable: false,
+  formatter: (cellContent, row) => (
+     (!row.delete && !row.status) ? <></> : <div className="banUserDiv">
+      <input type="checkbox" style={{display:"none"}}
+      id={row._id}
+      readOnly
+   checked={row.status}
+   onClick={() => {
+          this.dialog.show({
+            title: "Sure?",
+            body: "Are you sure Want to change Status?",
+            actions: [
+              Dialog.CancelAction(),
+              Dialog.OKAction(() => {
+                this.changeStatus(row._id,row.status);
+              }),
+            ],
+            bsSize: "small",
+            onHide: (dialog) => {
+              dialog.hide();
+              console.log("closed by clicking background.");
+            },
+          });
+        }}
+ />
+ <label htmlFor={row._id}></label>
+</div>  
+  ),
 }
- ]
+]:
+[
+  {
+    dataField: "_id",
+    text: "Id",
+    hidden: true,
+    editable: false,
+  },
+  {
+    dataField: "name",
+    text: "UserName",
+    sort: true,
+    headerStyle: (colum, colIndex) => {
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+  },
+  },
+  {
+    dataField: "mobile",
+    text: "MobileNo",
+    sort: true,
+    headerStyle: (colum, colIndex) => {
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+  },
+  }
+,
+  {
+    dataField: "type",
+    text: "Active?",
+    headerStyle: (colum, colIndex) => {
+      return { fontWeight:"bold"};
+  },
+    style: {
+      width: '70px',
+      textAlign:"center"
+    },
+    editable: false,
+    formatter: (cellContent, row) => (
+       (!row.delete && !row.status) ? <></> : <div className="banUserDiv">
+        <input type="checkbox" style={{display:"none"}}
+        id={row._id}
+        readOnly
+     checked={row.status}
+     onClick={() => {
+            this.dialog.show({
+              title: "Sure?",
+              body: "Are you sure Want to change Status?",
+              actions: [
+                Dialog.CancelAction(),
+                Dialog.OKAction(() => {
+                  this.changeStatus(row._id,row.status);
+                }),
+              ],
+              bsSize: "small",
+              onHide: (dialog) => {
+                dialog.hide();
+                console.log("closed by clicking background.");
+              },
+            });
+          }}
+   />
+   <label htmlFor={row._id}></label>
+</div>  
+    ),
+  }
+];
+const defaultSorted = [{
+  dataField: 'name',
+  order: 'asc'
+}];
 
-});
+
+const options = {
+  sizePerPage:4,
+  paginationSize: 4,
+  pageStartIndex: 0,
+  firstPageText: 'First',
+  prePageText: 'Back',
+  nextPageText: 'Next',
+  lastPageText: 'Last',
+  nextPageTitle: 'First page',
+  prePageTitle: 'Pre page',
+  firstPageTitle: 'Next page',
+  lastPageTitle: 'Last page',
+  disablePageTitle: true,
+  sizePerPageList : [ {
+    text: '4', value: 4
+    }, {
+    text: '8', value: 8
+    },
+    {text: '12', value: 12
+    }
+    ]
+};
+
+const rowStyle = (row, rowIndex) => {
+  const style = {};
+  if (!row.delete && !row.status) {
+    style.backgroundColor = '#ff3333';
+    
+    style.color = 'white';
+  } else if(row.delete && !row.status) {
+    
+  }
+  else{
+    style.backgroundColor = 'rgb(45, 214, 96)';
+
+    style.color = 'rgb(24, 43, 30)';
+  }
+    style.fontWeight = 'bold';
+  return style;
+};
+
+const { SearchBar } = Search;
+
     return (
       <>
 <NotificationContainer />
@@ -168,14 +377,36 @@ export default class Userlist extends Component{
             )}
             <Tabs defaultActiveKey="view" id="uncontrolled-tab-example" className="p-0 m-0">
               <Tab eventKey="view" title="View" >
-                <BootstrapTable
-                  keyField="_id"
-                  data={this.state.DATA}
-                  columns={columns}
-                  hovers
-                  pagination={pagination}
-
-                />
+                <ToolkitProvider
+  keyField="_id"
+  data={this.state.DATA}
+  columns={columns}
+   search
+   hover
+>
+  {
+    props => (
+      <div>
+        <SearchBar
+          { ...props.searchProps }
+          className="custome-search-field"
+          style={ { color: 'red', width:"100%" , border:"2px solid pink"} }
+          
+          delay={ 1000 }
+          placeholder="Search!"
+        />
+        <BootstrapTable
+            { ...props.baseProps }
+            bootstrap4
+  defaultSorted={ defaultSorted  }
+            pagination={paginationFactory(options)}
+ hover
+  rowStyle={ rowStyle }
+        />
+      </div>
+    )
+  }
+</ToolkitProvider>
               </Tab>
             </Tabs>
             <Dialog

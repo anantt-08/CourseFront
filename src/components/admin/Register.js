@@ -8,6 +8,10 @@ import { MDBContainer, MDBRow, MDBCol, MDBInput , MDBBtn, MDBCard, MDBCardBody }
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBirthdayCake } from '@fortawesome/free-solid-svg-icons'
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 class Register extends Component {
   constructor(props) {
@@ -18,8 +22,15 @@ class Register extends Component {
       mobile:"",
       description:"",
       birth: "",
-      errors: {}
+      errors: {},
+      list:[],
+      lisst:[],
+      courseid:"",
+      coursename:""
     };
+  }
+  componentDidMount = ()=>{
+    this.fetchCategory();
   }
   handleForm = e => {
     e.preventDefault();
@@ -28,11 +39,13 @@ class Register extends Component {
       email: this.state.email,
       birth:this.state.birth,
       description:this.state.description,
-mobile:this.state.mobile
+mobile:this.state.mobile,
+courseid:this.state.courseid,
+coursename:this.state.coursename
     };
     console.log(data)
     const token = localStorage.getItem("token");
-    console.log(token)
+   // console.log(this.state.courseid)
     axios
     .post("http://localhost:9000/api/users/register",data,{
       headers: {
@@ -45,7 +58,9 @@ mobile:this.state.mobile
       email: "",
       birth:"",
       description:"",
-mobile:""
+mobile:"",
+courseid:"",
+coursename:""
       })
       NotificationManager.success(result.data.msg);
     })
@@ -72,7 +87,49 @@ mobile:""
     const value = e.target.value;
     this.setState({ [name]: value });
   };
+   
+ handleCategory=(event)=>{
+  var text = event.nativeEvent.target.outerText
+  this.setState({courseid:event.target.value,
+  coursename:text})
+  }
+  fetchCategory=()=>{
+    const token = localStorage.getItem("token");  
+
+    axios
+    .get("http://localhost:9000/api/courses/find",{
+      headers: {
+        Authorization: token,
+      }
+    })
+    .then(result => {
+     //alert(JSON.stringify(result.data.userlist))
+    // const arr=[]
+    // result.data.userlist.map(e => {
+    //   arr.push(e._id)
+    // })
+    this.setState({
+    //  list:[...arr],
+      lisst:result.data.userlist
+   })
+  }) 
+    .catch(err => {
+console.log(err)
+    });
+    }
+
+   fillCategories=()=>{
+      return this.state.lisst.map(function(item){
+        return (
+            <MenuItem  value={item._id} key={item._id}>
+             {item.name}
+            </MenuItem>
+        )
+      })
+     }
+
   render() {
+   // console.log(this.state.list)
     return (
       <div className="content">
         <NotificationContainer />
@@ -135,8 +192,7 @@ mobile:""
                   </div>
                   </div>
   <div className="grey-text row m-0 p-0">
-  <div className="col-md-12 m-0 p-0">
-       <div className="col-md-12 mt-4 p-0">
+  <div className="col-md-6 m-0 p-0">
        <MDBInput
                     label="Description"
                     icon="user-md"
@@ -145,8 +201,23 @@ mobile:""
                     type="text"
                      name="description" onChange={this.handleInput}
                   /> 
-          </div>
                </div>
+               <div className="col-md-6 m-0 p-0">
+       <div className="col-md-6 ml-sm-4 mt-3 p-0">
+       <FormControl fullWidth >
+        <InputLabel id="demo-simple-select-label">Course Name</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={this.state.courseid}
+          onChange={(event)=>this.handleCategory(event)}
+        >  
+       
+          {this.fillCategories()}
+        </Select>
+      </FormControl> 
+          </div>
+               </div>             
                 <div className="text-center py-1 " style={{ display:"block",margin:"auto"}}>
                   <MDBBtn color="cyan" type="submit" >
                     Register

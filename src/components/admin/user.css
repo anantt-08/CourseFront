@@ -18,6 +18,10 @@ bekar kafi jalldh
     max-width: 100%;
 }    
 }
+.react-bootstrap-table-pagination{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
     .banUserDiv {
         width: 120px; 	height: 40px;	background-color:rgb(83, 83, 83);	border-radius: 50px;	position: relative;
     }

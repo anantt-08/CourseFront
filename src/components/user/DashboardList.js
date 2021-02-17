@@ -8,12 +8,15 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
 import Arrow from '@material-ui/icons/PlayArrowOutlined';
+import {useSelector} from "react-redux";
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import  Spinner from "../../spinner";
+import Topic from "./topic";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Divider from '@material-ui/core/Divider';
-import Hey from "../../hey";
+import View from "./view";
 const useTreeItemStyles = makeStyles((theme) => ({
     root: {
       color: theme.palette.text.secondary,
@@ -117,7 +120,8 @@ const useTreeItemStyles = makeStyles((theme) => ({
  
 export default function DashboardListUser(props)  {
     const classes = useStyles();
-
+    const auth = useSelector(state => state.auth)
+    const user=JSON.parse(auth.user)
 const handleClick=(value)=>{
 
 props.handleView(value)
@@ -139,26 +143,27 @@ props.handleDrawer()
         onClick={()=>handleClick(<UserModal />)}
         color="#a250f5"
         bgColor="#f3e8fd"
-        /> 
-     <StyledTreeItem nodeId="100" labelText="XYZ" labelIcon={DashboardIcon} >
+        />
+       <StyledTreeItem
+          nodeId="100"
+          labelText="PDF"
+          labelIcon={SupervisorAccountIcon}
+          
+        onClick={()=>handleClick(<View />)}
+        color="#a250f5"
+        bgColor="#f3e8fd"
+        />   
+     {  
+    user.courseid.map((object, i) => 
       <StyledTreeItem
-        nodeId="5"
-        labelText="ADD User"
-        labelIcon={Arrow}
-        onClick={()=>handleClick(<Spinner />)} 
+        nodeId={`${i+1}`}
+        labelText={object.name.toUpperCase()}
+        labelIcon={MenuBookIcon}
+        onClick={()=>handleClick(<Topic id={object.id} />)} 
         color="#1a73e8"
         bgColor="#e8f0fe"
       />
-      <StyledTreeItem
-        nodeId="6"
-        labelText="Display"
-        labelIcon={Arrow}
-        onClick={()=>handleClick(<Hey />)} 
-        color="#e3742f"
-        bgColor="#fcefe3"
-      />
-       </StyledTreeItem> 
-     
+    )}
       {/*   
         <StyledTreeItem nodeId="200" labelText="XYZ" labelIcon={Label}>
       <StyledTreeItem
