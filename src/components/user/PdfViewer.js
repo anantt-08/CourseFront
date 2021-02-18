@@ -110,7 +110,7 @@ const PdfViewer = ({pdf, onCancel, visible})=> {
         </div>
        <Button onClick={()=>onPage(1)}>Next</Button></>}
     </div>
-    return (<Modal
+    return (<Modal 
       wrapClassName="vertical-center-modal"
       maskClosable={false}
                    onCancel={yo}
@@ -122,7 +122,7 @@ const PdfViewer = ({pdf, onCancel, visible})=> {
                    closeIcon={< CancelIcon />}
                    bodyStyle={{height: 578, overflowY: 'auto'}}
     >
-    <div className="pdfWrapper">
+    <div className="pdfWrapper" onContextMenu={(e) => e.preventDefault()}>
     <Pdf file={pdf} page={page}  scale={mobile? scalee:scale} onContextMenu={(e) => e.preventDefault()}>
       {({ pdfDocument, pdfPage, canvas }) => (
         <>

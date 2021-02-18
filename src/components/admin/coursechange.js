@@ -134,7 +134,7 @@ onRemove(selectedList, removedItem,id) {
         text: "UserName",
         sort: true,
         headerStyle: (colum, colIndex) => {
-          return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+          return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
       },
       },
       {
@@ -142,7 +142,8 @@ onRemove(selectedList, removedItem,id) {
         text: "Email",
         sort: true,
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold"};
+          return { fontWeight:"bold",background:"#858796",color:"white"
+}
       },
       }
     ,
@@ -150,7 +151,7 @@ onRemove(selectedList, removedItem,id) {
       dataField: "type",
       text: "Alloted Course",
       headerStyle: (colum, colIndex) => {
-        return { fontWeight:"bold"};
+        return { fontWeight:"bold",background:"#858796",color:"white"};
     },
       style: {
         width: '70px',
@@ -213,14 +214,14 @@ match ?
     text: "UserName",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   }
   },
   {
     dataField: "email",
     text: "Email",
     headerStyle: (colum, colIndex) => {
-      return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold"};
+      return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
   },
   sort: true
   }
@@ -229,7 +230,7 @@ match ?
     dataField: "type",
     text: "Alloted Course",
     headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold"};
+      return { fontWeight:"bold",background:"#858796",color:"white"};
   },
     style: {
       width: '70px',
@@ -291,14 +292,14 @@ match ?
     text: "UserName",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   },
   }
 , {
     dataField: "type",
     text: "Alloted Course",
     headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold"};
+      return { fontWeight:"bold",background:"#858796",color:"white"};
   },
     style: {
       width: '70px',

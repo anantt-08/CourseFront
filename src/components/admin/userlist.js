@@ -102,7 +102,7 @@ export default class Userlist extends Component{
         text: "UserName",
         sort: true,
         headerStyle: (colum, colIndex) => {
-          return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+          return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
       },
       
         // style: (cell, row, rowIndex) => {
@@ -115,7 +115,7 @@ export default class Userlist extends Component{
         dataField: "email",
         text: "Email",
         headerStyle: (colum, colIndex) => {
-          return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold"};
+          return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
       }
       },
       {
@@ -123,14 +123,14 @@ export default class Userlist extends Component{
         text: "MobileNo",
         sort: true,
         headerStyle: (colum, colIndex) => {
-          return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+          return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
       },
       },
      {
         dataField: "birth",
         text: "BirthDate",
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold"};
+          return { fontWeight:"bold",background:"#858796",color:"white"};
       },
       }
     ,
@@ -138,7 +138,7 @@ export default class Userlist extends Component{
       dataField: "type",
       text: "Active?",
       headerStyle: (colum, colIndex) => {
-        return { fontWeight:"bold"};
+        return { fontWeight:"bold",background:"#858796",color:"white"};
     },
       style: {
         width: '70px',
@@ -189,14 +189,14 @@ match ?
     text: "UserName",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   },
   },
   {
     dataField: "email",
     text: "Email",
     headerStyle: (colum, colIndex) => {
-      return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold"};
+      return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
   },
   sort: true
   },
@@ -205,7 +205,7 @@ match ?
     text: "MobileNo",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   },
   }
 ,
@@ -213,7 +213,7 @@ match ?
   dataField: "type",
   text: "Active?",
   headerStyle: (colum, colIndex) => {
-    return { fontWeight:"bold"};
+    return { fontWeight:"bold",background:"#858796",color:"white"};
 },
   style: {
     width: '70px',
@@ -261,7 +261,7 @@ match ?
     text: "UserName",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   },
   },
   {
@@ -269,7 +269,7 @@ match ?
     text: "MobileNo",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold"};
+      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   },
   }
 ,
@@ -277,7 +277,7 @@ match ?
     dataField: "type",
     text: "Active?",
     headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold"};
+      return { fontWeight:"bold",background:"#858796",color:"white"};
   },
     style: {
       width: '70px',
