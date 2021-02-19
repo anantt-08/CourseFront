@@ -177,7 +177,15 @@ const Topic = () => {
   const  handleSubmit=(e)=> {
     e.preventDefault();
     console.log(files);
-    
+   
+    let FINDD = files.find((doc) => doc.file_id == 1);
+     if(FINDD===undefined){
+       NotificationManager.error("Program Field Cant Be Empty!")
+     }
+     let filterr=filename.split(".")
+     if( filterr[filterr.length-1]=="pdf" || filterr[filterr.length-1]=="PDF"){
+      return NotificationManager.error("Program Cant Be Of Format PDF's")
+     }
     const token = localStorage.getItem("token");  
     var formData=new FormData()
     for (const f of files) {
@@ -203,15 +211,21 @@ const Topic = () => {
       Authorization: token
     }
   }
+  let body={
+    
+    topicname:topic,
+    courseid:courseid,
+    batch:batch,
+    time:date
+  }
   axios
-  .get("http://localhost:9000/api/topics/check", {
+  .post("http://localhost:9000/api/topics/check", body,{
     headers: {
       Authorization: token,
     },
   })
   .then((res) => {
-   continue;
-  });    
+    console.log("yreahhhhhh")
       axios
       .post("http://localhost:9000/api/topics/topicsubmit",formData,config)
       .then((res) => {
@@ -233,16 +247,23 @@ const Topic = () => {
         NotificationManager.success("Success!!") 
           }, 1000);
         })
-     }).catch((err)=>{
-      if (err.response && err.response.status === 404)
-      NotificationManager.error(err.response.data.msg);
-     else
-      NotificationManager.error("Something Went Wrong");
+     }).catch((err) => {
+      if(err.response.status === 405){
+        setupload(0)
+              NotificationManager.error("Only Accepts PDF/RAR/ZIP Files!") 
+      }
+      else{
+      NotificationManager.error(err.response.data.msg)
+      setupload(0)  
+    }
+    });
     }).catch((err)=>{
+      //console.log(err.response.data.success)
+      setupload(0)
       if (err.response && err.response.status === 400)
       NotificationManager.error(err.response.data.msg);
      else
-      NotificationManager.error("Something Went Wrong");
+      NotificationManager.error("Something Went Wrong");     
     })
     return false;
     }
