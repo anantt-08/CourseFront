@@ -105,6 +105,7 @@ const Topic = () => {
   const[birth,setBirth]=useState(null);
   const[date,setDate]=useState(null);
   const [hover, setHover] = useState(false);
+   const [locate,setLocate]=useState(false);
   const  onFileUpload =(event) => {
     
     event.preventDefault();
@@ -175,6 +176,7 @@ const Topic = () => {
       }
    }
   const  handleSubmit=(e)=> {
+    setLocate(false);
     e.preventDefault();
     console.log(files);
    
@@ -188,15 +190,27 @@ const Topic = () => {
      }
     const token = localStorage.getItem("token");  
     var formData=new FormData()
+    //sorting oF FILES! in Correct ORDER
+    files.sort(function(a, b) {
+      return a.file_id - b.file_id;
+    });
     for (const f of files) {
       formData.append("files",f.uploaded_file)
+      if(f.file_id==2){
+        setLocate(true)
+      }
 }
     formData.append("courseid",courseid);
     formData.append("topicname",topic);
     formData.append("batch",batch.toUpperCase());
     formData.append("time",date);
     formData.append("coursename",coursename);
-   
+    if(setLocate){
+      formData.append("locate",true);
+    }
+    else{
+      formData.append("locate",false);
+    }
     const config = {
       onUploadProgress: (progressEvent) => {
         const {loaded, total} = progressEvent;
@@ -225,7 +239,6 @@ const Topic = () => {
     },
   })
   .then((res) => {
-    console.log("yreahhhhhh")
       axios
       .post("http://localhost:9000/api/topics/topicsubmit",formData,config)
       .then((res) => {
@@ -244,6 +257,7 @@ const Topic = () => {
   setFilename("")
   setCourseid("")
   setCoursename("")
+  setLocate(false)
         NotificationManager.success("Success!!") 
           }, 1000);
         })
@@ -280,6 +294,7 @@ const Topic = () => {
   setFilename("")
   setCourseid("")
   setCoursename("")
+  setLocate(false)
             NotificationManager.success("Reset Values!") 
     }
   useEffect(() => {
