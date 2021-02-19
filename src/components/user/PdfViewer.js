@@ -52,7 +52,6 @@ const PdfViewer = ({pdf, onCancel, visible})=> {
       } else if (newPage < 1){
         newPage = pages
       }
-  
       setPage(newPage)
     }
 

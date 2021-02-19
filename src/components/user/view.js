@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PdfViewer from './PdfViewer';
 import {Button} from "react-bootstrap";
-import pdf from './test.pdf';
+import pdf from './files-1613643323814.1D.pdf';
 function View() {
    const [showPdf, setShowPdf] = useState(false)
    return (

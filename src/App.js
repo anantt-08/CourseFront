@@ -6,6 +6,8 @@ import AuthRoute from "./components/AuthRoute";
 import PrivateRoute from "./components/PrivateRoute";
 import Spinner from "./spinner";
 
+import { Worker } from '@react-pdf-viewer/core';
+
 const ErrorS = lazy(() => import("./components/ErrorPage"));
 const AdminLogin = lazy(() => import("./home"));
 const DashboardUser = lazy(() => import("./components/user/Dashboard"));
@@ -59,7 +61,10 @@ const resetP = () => (
 
 function App() {
   return (
-    <div>
+    <Worker
+    workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js"
+>
+<div>
       <Router>
       <Switch>  
         <GuestRoute exact component={adminLogin} path="/" />
@@ -73,6 +78,8 @@ function App() {
         </Switch> 
       </Router>
     </div>
+
+</Worker>
   );
 }
 
