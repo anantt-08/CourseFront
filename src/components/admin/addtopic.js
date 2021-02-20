@@ -105,30 +105,32 @@ const Topic = () => {
   const[birth,setBirth]=useState(null);
   const[date,setDate]=useState(null);
   const [hover, setHover] = useState(false);
-   const [locate,setLocate]=useState(false);
   const  onFileUpload =(event) => {
     
     event.preventDefault();
 
-    let id = event.target.id;
+    let id = parseInt(event.target.id);
     let file = event.target.files[0];
     let file_reader = new FileReader();
     let duplicateFile = {};
-    duplicateFile = files.find((doc) => doc.file_id === id);
+  //  console.log("woooohu",id)
+    duplicateFile = files.find((doc) => parseInt(doc.file_id) ===parseInt(id) );
     let index=files.indexOf(duplicateFile);
-    if(id==1){
+  //  console.log(duplicateFile,"yeah")
+    if(id===1){
       if(event.target.files[0]){
         setFilename(file.name.toUpperCase()); 
       }
       else{
         var filtered = files.filter(function(value){ 
-          return value.file_id!=1;
+          return parseInt(value.file_id)!==1;
       });
+     // console.log(filtered,"opo")
         setFiles(filtered);
         setFilename("")
       }
 }
-    if(id==2){
+    if(id===2){
       file_reader.onload = () => {
        
       setUrl(file_reader.result);
@@ -139,13 +141,14 @@ const Topic = () => {
       }
       else{
         var filtered = files.filter(function(value){ 
-          return value.file_id!=2;
+          return parseInt(value.file_id)!==2;
       });
+     // console.log(filtered,"yo")
       setUrl("");
         setFiles(filtered);
       }
     }
-    if(id==3){
+    if(id===3){
           file_reader.onload = () => {
        
       setUrll(file_reader.result);
@@ -157,32 +160,32 @@ const Topic = () => {
       else{
         
         var filtered = files.filter(function(value){ 
-          return value.file_id!=3;
+          return parseInt(value.file_id)!==3;
       });
+  //    console.log(filtered,"yp")
         setFiles(filtered);
         setUrll("");
       }
     }
    
       if (duplicateFile=== undefined) {
-     setFiles([...files, { file_id:id,uploaded_file: file }]);
+     setFiles([...files, { file_id:parseInt(id),uploaded_file: file }]);
       }
       else{
+       // console.log("HMM NOW PROCCED")
       let a=files[index]={
-         file_id:id,
+         file_id:parseInt(id),
          uploaded_file:file
        }
-     
+      
       }
    }
-  const  handleSubmit=(e)=> {
-    setLocate(false);
+  const  handleSubmit=async (e)=> {
+//    console.log(files);
     e.preventDefault();
-    console.log(files);
-   
-    let FINDD = files.find((doc) => doc.file_id == 1);
+    let FINDD = files.find((doc) => parseInt(doc.file_id) === 1);
      if(FINDD===undefined){
-       NotificationManager.error("Program Field Cant Be Empty!")
+     return  NotificationManager.error("Program Field Cant Be Empty!")
      }
      let filterr=filename.split(".")
      if( filterr[filterr.length-1]=="pdf" || filterr[filterr.length-1]=="PDF"){
@@ -196,16 +199,14 @@ const Topic = () => {
     });
     for (const f of files) {
       formData.append("files",f.uploaded_file)
-      if(f.file_id==2){
-        setLocate(true)
-      }
 }
+    
     formData.append("courseid",courseid);
     formData.append("topicname",topic);
     formData.append("batch",batch.toUpperCase());
     formData.append("time",date);
     formData.append("coursename",coursename);
-    if(setLocate){
+    if(files.find((doc) => parseInt(doc.file_id) === 2) != undefined){
       formData.append("locate",true);
     }
     else{
@@ -232,54 +233,58 @@ const Topic = () => {
     batch:batch,
     time:date
   }
-  axios
-  .post("http://localhost:9000/api/topics/check", body,{
-    headers: {
-      Authorization: token,
-    },
-  })
-  .then((res) => {
-      axios
-      .post("http://localhost:9000/api/topics/topicsubmit",formData,config)
-      .then((res) => {
-        console.log(res);
-         setupload(100, ()=>{
-          setTimeout(() => {
-            setupload(0)
-         setFiles([])
-         setEnabled(false)
-  setBatch('')
-  setTopic("")
-  setUrl("")
-  setUrll("")
-  setBirth(null)
-  setDate(null)
-  setFilename("")
-  setCourseid("")
-  setCoursename("")
-  setLocate(false)
-        NotificationManager.success("Success!!") 
-          }, 1000);
-        })
-     }).catch((err) => {
-      if(err.response.status === 405){
-        setupload(0)
-              NotificationManager.error("Only Accepts PDF/RAR/ZIP Files!") 
-      }
-      else{
-      NotificationManager.error(err.response.data.msg)
-      setupload(0)  
-    }
-    });
-    }).catch((err)=>{
-      //console.log(err.response.data.success)
-      setupload(0)
-      if (err.response && err.response.status === 400)
-      NotificationManager.error(err.response.data.msg);
-     else
-      NotificationManager.error("Something Went Wrong");     
+  try{
+    const res=await  axios
+    .post("http://localhost:9000/api/topics/check", body,{
+      headers: {
+        Authorization: token,
+      },
     })
-    return false;
+
+    try {
+     console.log(res) 
+   const ress= await axios
+   .post("http://localhost:9000/api/topics/topicsubmit",formData,config)
+  setupload(100, ()=>{
+    setTimeout(() => {
+      setupload(0)
+   setFiles([])
+   setEnabled(false)
+setBatch('')
+setTopic("")
+setUrl("")
+setUrll("")
+setBirth(null)
+setDate(null)
+setFilename("")
+setCourseid("")
+setCoursename("")
+  NotificationManager.success("Success!!") 
+    }, 1000);
+  })
+    }
+    catch(err){
+      if(err.response.status === 405){
+          setupload(0)
+                NotificationManager.error("Only Accepts PDF/RAR/ZIP Files!") 
+        }
+        else{
+          setupload(0)
+        NotificationManager.error(err.response.data.msg)
+    }
+  }
+}
+  catch(err){
+    if (err.response && err.response.status === 400){
+    setupload(0)
+    NotificationManager.error(err.response.data.msg);
+    }
+   else{
+    NotificationManager.error("Something Went Wrong");   
+    setupload(0) 
+  }
+  }
+  
     }
     const reset=()=>{
       setupload(0)
@@ -294,7 +299,6 @@ const Topic = () => {
   setFilename("")
   setCourseid("")
   setCoursename("")
-  setLocate(false)
             NotificationManager.success("Reset Values!") 
     }
   useEffect(() => {
@@ -311,7 +315,7 @@ const Topic = () => {
    
   const getPickerValue = (value) => {
     if(value!=null){
-   let A=value.toString().split(" ").slice(1, 4).join(" ")
+   let A=value.toString().split(" ").slice(1, 5).join(" ")
     setDate(A)
  }
     else{
@@ -371,8 +375,7 @@ console.log(files,"mm")
     <div className={classes.maindiv}>
       <div className={classes.headingdiv}>
        <i> <h3  style={{textAlign:"center",justifyContent:"center",fontWeight:"bold",fontFamily:"'Vazir', sans-serif"}}>Add Topic Wise Programs!</h3>
-       </i>  </div>
-      <form onSubmit={handleSubmit}> 
+       </i>  </div> 
      <Grid container spacing={2}>
      <Grid item xs={12} sm={6}>
      <FormControl fullWidth >
@@ -563,9 +566,13 @@ console.log(files,"mm")
                 }
             </div>
         </Grid> 
+        <Grid item xs={12}>
+  { uploadPercentage > 0 && <ProgressBar now={uploadPercentage}  label={`${uploadPercentage}%`} className="meter" style={{marginBottom:"5px",width:"100%"}}/> }
+  </Grid>
+       
       <Grid item style={{display:'flex',justifyContent:'flex-end',width:"1.5em"}} xs={12} sm={6}>
       {enabled ? (
-        <Button variant="contained" color="primary" type="submit" >
+        <Button variant="contained" color="primary" type="button" onClick={handleSubmit} >
         Submit
        </Button>
       ) : (
@@ -577,7 +584,7 @@ console.log(files,"mm")
       onMouseLeave={()=>{
         setHover(false);
       }}>
-        <Button disabled variant="contained" color="primary" type="submit" >
+        <Button disabled variant="contained" color="primary" type="button" onClick={handleSubmit} >
        Submit
       </Button>
       </div>
@@ -589,10 +596,9 @@ console.log(files,"mm")
       </Button>
       </Grid>
      </Grid>
-     </form>
      </div>
  </div>
- { uploadPercentage > 0 && <ProgressBar now={uploadPercentage}  label={`${uploadPercentage}%`} className="meter" style={{marginBottom:"5px"}}/> }
+ 
  </>
   );
 };

@@ -89,6 +89,13 @@ bekar kafi jalldh
     margin-left: 80px;
 }
 .modal-header{
-    background-color:rgb(7, 104, 7);
+    background-color: green;
     color:wheat;
 }
+
+.table-responsivee > table{
+table-layout: inherit !important;
+}
+.table-responsiveeee > table{
+    table-layout: inherit !important;
+    }

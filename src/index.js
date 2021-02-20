@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import 'react-notifications/lib/notifications.css';
 import 'mdbreact/dist/css/mdb.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 
 ReactDOM.render(
   <Provider store={store}>

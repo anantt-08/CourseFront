@@ -261,7 +261,7 @@ match ?
     text: "UserName",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+      return { fontWeight:"bold",background:"#858796",color:"white"};
   },
   },
   {
@@ -269,7 +269,7 @@ match ?
     text: "MobileNo",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+      return { fontWeight:"bold",background:"#858796",color:"white"};
   },
   }
 ,
@@ -365,7 +365,7 @@ const { SearchBar } = Search;
     return (
       <>
 <NotificationContainer />
-        <div style={{width:"100%", background: "#ecf0f1"}}>
+        <div style={{width:"100%", background: match ?  "#ecf0f1": "white"}}>
           <Container className="mt-3">
             {this.state.loading ? (
               <div></div>
@@ -398,6 +398,7 @@ const { SearchBar } = Search;
         <BootstrapTable
             { ...props.baseProps }
             bootstrap4
+            wrapperClasses="table-responsiveeee"
   defaultSorted={ defaultSorted  }
             pagination={paginationFactory(options)}
  hover

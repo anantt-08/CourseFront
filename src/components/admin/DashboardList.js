@@ -9,6 +9,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Label from '@material-ui/icons/ShoppingCartOutlined';
 import Topic from "./addtopic";
+import Displaytopic from "./displaytopic";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import Arrow from '@material-ui/icons/PlayArrowOutlined';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -219,7 +220,7 @@ props.handleDrawer()
         nodeId="12"
         labelText="Display All"
         labelIcon={Arrow}
-        onClick={()=>handleClick(<Spinner />)} 
+        onClick={()=>handleClick(<Displaytopic />)} 
        
         color="#e3742f"
         bgColor="#fcefe3"
