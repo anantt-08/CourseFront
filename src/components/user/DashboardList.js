@@ -1,5 +1,6 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
+import axios from "axios";
 import { makeStyles } from '@material-ui/core/styles';
 import UserModal from "./userModal";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -16,7 +17,6 @@ import  Spinner from "../../spinner";
 import Topic from "./topic";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Divider from '@material-ui/core/Divider';
-import View from "./view";
 const useTreeItemStyles = makeStyles((theme) => ({
     root: {
       color: theme.palette.text.secondary,
@@ -120,13 +120,19 @@ const useTreeItemStyles = makeStyles((theme) => ({
  
 export default function DashboardListUser(props)  {
     const classes = useStyles();
-    const auth = useSelector(state => state.auth)
+    const auth = useSelector(state => state.auth);
+    const [DATA,setDATA]=useState([]);
+
     const user=JSON.parse(auth.user)
 const handleClick=(value)=>{
 
 props.handleView(value)
 props.handleDrawer()
 }
+const handleClickk=(value)=>{ 
+  props.handleView(value)
+  props.handleDrawer()
+  }
  return(   
     <TreeView
     className={classes.root}
@@ -144,22 +150,13 @@ props.handleDrawer()
         color="#a250f5"
         bgColor="#f3e8fd"
         />
-       <StyledTreeItem
-          nodeId="100"
-          labelText="PDF"
-          labelIcon={SupervisorAccountIcon}
-          
-        onClick={()=>handleClick(<View />)}
-        color="#a250f5"
-        bgColor="#f3e8fd"
-        />   
      {  
     user.courseid.map((object, i) => 
       <StyledTreeItem
         nodeId={`${i+1}`}
         labelText={object.name.toUpperCase()}
         labelIcon={MenuBookIcon}
-        onClick={()=>handleClick(<Topic id={object.id} />)} 
+        onClick={()=>handleClickk(<Topic id={object.id} />)} 
         color="#1a73e8"
         bgColor="#e8f0fe"
       />

@@ -49,6 +49,7 @@ export default class Displaytopic extends Component{
     res.data.userlist.sort();
     this.setState({ list: res.data.userlist });
     let dict={}  
+    // var items = Object.values(cart) if cart= object
     this.state.list.map((item)=>{
       dict[item]=item  
     })
@@ -165,8 +166,29 @@ const selectOptions =   this.state.dictt;
         dataField: "time",
         text: "DateAndTime",
         sort: true,
+        editable:false,
+        formatter: (cell,row )=>{
+          let arr=row.time.split(" ").slice(0, 3)
+          let timee=row.time.split(" ").slice(3,)
+          var yoho=[];
+          console.log(arr)
+          timee=timee[0].split(":")
+          
+          console.log(timee)
+          if(timee[0]>12){
+            yoho.push(12-parseInt(timee[0]))
+            yoho.push(timee[1])
+            yoho.push("PM")
+          }
+          else{
+            yoho.push(parseInt(timee[0]))
+            yoho.push(timee[1])
+            yoho.push("AM")
+          }
+          return( arr + " " + yoho.join(":",0,2) )
+          },
         headerStyle: (colum, colIndex) => {
-          return {textAlign:"center",fontWeight:"bold",background:"#858796",color:"white"};
+          return {textAlign:"center",fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '178px' , wordWrap:'break-word'};
       }, sortFunc: (a, b, order, dataField) => {
         if (order === 'asc') {
          a= a.toString().split(" ").slice(0, 4)
@@ -206,7 +228,7 @@ const selectOptions =   this.state.dictt;
         dataField: "courseid",
         text: "FilesUploaded",
         headerStyle: (colum, colIndex) => {
-          return {textAlign:"center", fontWeight:"bold",background:"#858796",color:"white"};
+          return {textAlign:"center", fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '178px' , wordWrap:'break-word'};
       },
       style:{
        fontSize:"14px",
@@ -224,7 +246,7 @@ const selectOptions =   this.state.dictt;
         dataField: "operation",
         text: "Delete",
         headerStyle: (colum, colIndex) => {
-          return { textAlign:"center",fontWeight:"bold",background:"#858796",color:"white"};
+          return { textAlign:"center",fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word'};
       },
         style: {
           width: 10,

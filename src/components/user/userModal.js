@@ -125,9 +125,10 @@ class UserModal extends Component {
                     <div>
                         <div>
                             <form onSubmit={this.handleForm}  >
-                                <div  style={{textAlign:"center",justifyContent:"space-between",display:"flex"}}>
+                                <div  style={{textAlign:"center",justifyContent:"space-between",display:"flex",paddingRight:"10px",paddingLeft:"5px"}}>
                                     <h4>Update User Details</h4>
                                        <MDBView hover zoom>
+                                     <div>
                                        <img src="https://img.icons8.com/officel/60/000000/remove-user-male.png"  
                                     style={{cursor:"pointer",
                                     background:'red',
@@ -152,6 +153,8 @@ class UserModal extends Component {
                                         });
                                       }}
                                       />
+                                      <p style={{color:"red",fontWeight:"bold",fontStyle:"italic",fontSize:"15px"}}>Delete ?</p>
+                                      </div>
   </MDBView>        
                                 </div>
                                 <div>

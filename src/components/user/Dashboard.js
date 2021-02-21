@@ -147,6 +147,7 @@ const useStyles = makeStyles((theme) => ({
   },
   yo:{
     paddingLeft: '0px', 
+    paddingTop: '0px', 
     paddingRight: '0px',
     marginTop:"20px",
   }
