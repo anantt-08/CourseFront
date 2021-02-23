@@ -99,3 +99,13 @@ table-layout: inherit !important;
 .table-responsiveeee > table{
     table-layout: inherit !important;
     }
+ #select-filter-column-coursename > option{
+padding: 5px;
+margin:2px;
+font-family:cursive;
+ }  
+ #select-filter-column-batch > option{
+    padding: 15px;
+    margin:2px;
+    font-family:Lucida Console, Courier, monospace;
+     }  

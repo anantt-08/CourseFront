@@ -1,0 +1,12 @@
+.dropdown-menu{
+width: 62% !important;
+transform: translate(1px, 57px) !important;
+font-family:cursive;
+}
+.dropdown-menu a:hover{
+    background-color:violet;
+    margin:4px;
+    }
+#dropdown-menu-align-right{
+    width:60%  !important
+}

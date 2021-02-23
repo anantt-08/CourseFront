@@ -269,7 +269,7 @@ export default function Dashboard(props) {
         <Divider />
     
          
-        <DashboardList handleDrawer={handleDrawer} handleView={handleView}/>
+        <DashboardList handleDrawer={handleDrawer} handleDrawerClose={handleDrawerClose} handleView={handleView}/>
        
         <Divider />
          

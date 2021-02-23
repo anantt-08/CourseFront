@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import Addbatch from "./addbatch";
@@ -11,6 +11,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Label from '@material-ui/icons/ShoppingCartOutlined';
 import Topic from "./addtopic";
+import Showbatch from "./displaybatch";
 import Displaytopic from "./displaytopic";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import Arrow from '@material-ui/icons/PlayArrowOutlined';
@@ -133,18 +134,23 @@ const useTreeItemStyles = makeStyles((theme) => ({
  
 export default function DashboardList(props)  {
  // const [width,setWidth]=useState(0)
-    const classes = useStyles();
+    const classes = useStyles();  
+    const [size, setSize] = useState(0);
 
 const handleClick=(value)=>{
 
 props.handleView(value)
-props.handleDrawer()
+{size <450 ?  props.handleDrawerClose() :  props.handleDrawer();}
 }
-
-// useEffect(() => {
-//   setWidth(window.innerWidth);
-// }, []);
-// console.log(width)
+const updateSize = () =>{
+  setSize(window.innerWidth);
+} 
+useLayoutEffect(() => {
+        
+  window.addEventListener('resize', updateSize);
+  updateSize();
+  return () => window.removeEventListener('resize', updateSize);
+}, []);
  return(   
     <TreeView
     className={classes.root}
@@ -208,15 +214,25 @@ props.handleDrawer()
         bgColor="#fcefe3"
       />
        </StyledTreeItem>
-       <StyledTreeItem
-          nodeId="600"
-          labelText="Add Batch"
-          labelIcon={LoyaltyIcon}
-          
-        onClick={()=>handleClick(<Addbatch />)}
+       <StyledTreeItem nodeId="600" labelText="Batch" labelIcon={LoyaltyIcon}>
+      <StyledTreeItem
+        nodeId="13"
+        labelText="Add Batch"
+        labelIcon={Arrow}
+        onClick={()=>handleClick(<Addbatch />)} 
+         
         color="#337d54"
         bgColor="#7cd9a5"
-        />    
+      />
+      <StyledTreeItem
+        nodeId="14"
+        labelText="Display All"
+        labelIcon={Arrow}
+        onClick={()=>handleClick(<Showbatch />)}  
+        color="#337d54"
+        bgColor="#7cd9a5"
+      />
+       </StyledTreeItem>
        <StyledTreeItem nodeId="500" labelText="Add Topics" labelIcon={AddCircleOutlineIcon}>
       <StyledTreeItem
         nodeId="11"

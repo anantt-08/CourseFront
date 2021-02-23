@@ -30,27 +30,26 @@ const useStyles = makeStyles((theme) => ({
     alignContent:'center',
      justifyContent:'center'
   },
-  batchyo:{
-    '&::after': {
-      content: '"*Only One Alphabet (A->Z)"',
-      display: 'block',
-      height: 60,
-      marginLeft:200,
-      marginTop: -24,
-      fontStyle:"italic",
-      color: "red"    }
-  }
-  ,
-  hmm: {
-    display: 'flex',
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-  esmall: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
+  // batchyo:{
+  //   '&::after': {
+  //     content: '"*Only One Alphabet (A->Z)"',
+  //     display: 'block',
+  //     height: 60,
+  //     marginLeft:200,
+  //     marginTop: -24,
+  //     fontStyle:"italic",
+  //     color: "red"    }
+  // }
+  // hmm: {
+  //   display: 'flex',
+  //   '& > *': {
+  //     margin: theme.spacing(1),
+  //   },
+  // },
+  // esmall: {
+  //   width: theme.spacing(3),
+  //   height: theme.spacing(3),
+  // },
   headingdiv:{
    display:'flex',
    flexDirection:'column',
@@ -94,7 +93,6 @@ const Topic = () => {
   const [ uploadPercentage,setupload]=useStateWithCallbackLazy(0);
   const [files, setFiles] = useState([]);
   const [topic,setTopic]=useState("");
-  const [batch,setBatch]=useState("");
   const [url, setUrl] = useState('');
   const [enabled, setEnabled] = useState(false);
   const [urll,setUrll]= useState("");
@@ -104,6 +102,9 @@ const Topic = () => {
   const[coursename,setCoursename]=useState("");
   const[birth,setBirth]=useState(null);
   const[date,setDate]=useState(null);
+  const[batchid,setBatchid]=useState("");
+  const[batchname,setBatchname]=useState("");
+  const[listt,setListt]=useState([]);
   const [hover, setHover] = useState(false);
   const  onFileUpload =(event) => {
     
@@ -203,7 +204,7 @@ const Topic = () => {
     
     formData.append("courseid",courseid);
     formData.append("topicname",topic);
-    formData.append("batch",batch.toUpperCase());
+    formData.append("batch",batchname);
     formData.append("time",date);
     formData.append("coursename",coursename);
     if(files.find((doc) => parseInt(doc.file_id) === 2) != undefined){
@@ -230,7 +231,7 @@ const Topic = () => {
     
     topicname:topic,
     courseid:courseid,
-    batch:batch,
+    batch:batchname,
     time:date
   }
   try{
@@ -250,11 +251,12 @@ const Topic = () => {
       setupload(0)
    setFiles([])
    setEnabled(false)
-setBatch('')
+setBatchname('')
 setTopic("")
 setUrl("")
 setUrll("")
 setBirth(null)
+setBatchid("")
 setDate(null)
 setFilename("")
 setCourseid("")
@@ -290,7 +292,8 @@ setCoursename("")
       setupload(0)
          setFiles([])
          setEnabled(false)
-  setBatch('')
+  setBatchname('')
+  setBatchid("")
   setTopic("")
   setUrl("")
   setUrll("")
@@ -303,6 +306,7 @@ setCoursename("")
     }
   useEffect(() => {
    fetchCategory();
+   fetchBatch();
   }, []);
 
   useEffect(() => {
@@ -324,6 +328,19 @@ setCoursename("")
     setBirth(value)
   }
 
+  const fetchBatch=()=>{
+    const token = localStorage.getItem("token");  
+    axios.get("http://localhost:9000/api/batches/find",{
+  headers: {
+    Authorization: token,
+  },
+}).then((result)=>{
+  setListt(result.data.userlist)
+ 
+})
+.catch((err)=>
+{console.log(err)})
+    }
  const fetchCategory=()=>{
     const token = localStorage.getItem("token");  
     axios
@@ -355,7 +372,21 @@ console.log(err)
       )
     })
    }
+   const  handleBatch=(event)=>{
+    var text = event.nativeEvent.target.outerText
+    setBatchid(event.target.value);
+    setBatchname(text);
+    }
 
+const fillBatches=()=>{
+  return listt.map(function(item){
+    return (
+        <MenuItem  value={item._id} key={item._id}>
+         {item.coursename}{" "}{item.week}{" "}{item.timing}
+        </MenuItem>
+    )
+  })
+ }
   
    const handleClickA = event => {
     hiddenFileInput1.current.click();
@@ -431,10 +462,17 @@ console.log(files,"mm")
  
          
          <Grid item xs={12} sm={6}>
-         <TextField
-         value={batch}
-         id="outlined-basic" label="Batch Name" variant="outlined" className={classes.batchyo}
-           fullWidth onChange={(event)=>setBatch(event.target.value)} />
+         <FormControl fullWidth >
+        <InputLabel id="demo-simple-select-label">Select Batch</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={batchid}
+          onChange={(event)=>handleBatch(event)}
+        >  
+          {fillBatches()}
+        </Select>
+      </FormControl> 
          </Grid>
   
          <Grid item xs={12} sm={6} style={{display:'flex',justifyContent:'center',alignItems:"center",background:"#858796",color:"white"}}>

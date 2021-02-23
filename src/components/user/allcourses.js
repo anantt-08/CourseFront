@@ -18,14 +18,14 @@ const Allcourses = () => {
     setTimeout(()=>{
       setData(res.data.userlist)
       setloading(true)
-    },800)
+    },600)
    
   }).catch((err)=>{console.log(err)})
   }
     return (
       <>
       {loading ? <></>:<div style={{marginLeft:"-50px"}}><Spinner /></div> }
-        <div class="course-cats-area default-padding bottom-less">
+        <div className="course-cats-area default-padding bottom-less">
             <div className="container">
             <div className="row text-center text-light">
                 {data.map((item)=>{

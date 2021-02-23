@@ -68,6 +68,7 @@ export default class Topic extends Component{
   })
     yoo.data.userlist.sort();
     this.setState({DATA:yoo.data.userlist});
+    console.log(this.state.DATA)
     this.setState({ loading: true });
 }
 catch(err){
@@ -95,8 +96,8 @@ catch(err){
   }
   render() {
 //console.log(this.state.dictt)
-//console.log(this.state.DATA)
-//console.log(this.props.id)
+console.log(this.state.DATA)
+console.log(this.props.id)
 const selectOptions =   this.state.dictt;
       const matches= (this.state.width>750) ? true:false 
     const columns =  [

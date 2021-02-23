@@ -171,17 +171,25 @@ const selectOptions =   this.state.dictt;
           let arr=row.time.split(" ").slice(0, 3)
           let timee=row.time.split(" ").slice(3,)
           var yoho=[];
-          console.log(arr)
+         // console.log(arr)
           timee=timee[0].split(":")
-          
-          console.log(timee)
-          if(timee[0]>12){
-            yoho.push(12-parseInt(timee[0]))
+          let hours=timee[0];
+          if(hours>=12){
+            hours=12-parseInt(hours)
+            if(hours==0){
+                hours=12
+            }
+            yoho.push(hours)
             yoho.push(timee[1])
             yoho.push("PM")
-          }
+        }
           else{
-            yoho.push(parseInt(timee[0]))
+            if(hours=="00"){
+              yoho.push(12)
+            }  
+            else{
+             yoho.push(parseInt(hours))
+            }
             yoho.push(timee[1])
             yoho.push("AM")
           }
