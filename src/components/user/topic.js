@@ -42,16 +42,18 @@ export default class Topic extends Component{
     window.addEventListener('resize', this.updateDimensions);
     this.updateDimensions();
     try {
-      let res= await  axios.get("http://localhost:9000/api/topics/batch",{
+      let res= await  axios.get(`http://localhost:9000/api/batches/find/${this.props.id}`,{
         headers: {
             Authorization: token,
           }   
     })
-    res.data.userlist.sort();
-    this.setState({ list: res.data.userlist });
+    res.data.user.sort();
+    this.setState({ list: res.data.user });
+    console.log(this.state.list)
     let dict={}  
     this.state.list.map((item)=>{
-      dict[item]=item  
+     let op= item.coursename+" "+item.week+" "+item.timing
+      dict[op]=op  
     })
      this.setState({dictt:dict});
      //alert(this.state.dictt)
@@ -68,7 +70,6 @@ export default class Topic extends Component{
   })
     yoo.data.userlist.sort();
     this.setState({DATA:yoo.data.userlist});
-    console.log(this.state.DATA)
     this.setState({ loading: true });
 }
 catch(err){
@@ -96,8 +97,8 @@ catch(err){
   }
   render() {
 //console.log(this.state.dictt)
-console.log(this.state.DATA)
-console.log(this.props.id)
+//console.log(this.state.DATA)
+//console.log(this.props.id)
 const selectOptions =   this.state.dictt;
       const matches= (this.state.width>750) ? true:false 
     const columns =  [
@@ -219,7 +220,7 @@ const selectOptions =   this.state.dictt;
     fontWeight:"bold"
   },
         headerStyle: (colum, colIndex) => {
-          return { whiteSpace: 'nowrap', width: '178px' , wordWrap:'break-word',textAlign:"center",fontWeight:"bold",background:"#858796",color:"white"};
+          return { whiteSpace: 'nowrap', width: '208px' , wordWrap:'break-word',textAlign:"center",fontWeight:"bold",background:"#858796",color:"white"};
       },
       },
   {

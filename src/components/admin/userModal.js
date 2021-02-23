@@ -62,6 +62,41 @@ class UserModal extends Component {
             NotificationManager.warning("Your Password Not Matched ! Please Check your password and confirm password");
             return false;
         }
+        if(this.state.email==JSON.parse(localStorage.getItem('user')).email){
+            axios
+            .put("http://localhost:9000/api/users/update",{
+                _id:this.state._id,
+                name:this.state.name,
+                mobile:this.state.mobile,
+                description:this.state.description,
+                password:this.state.password,
+                password_confirmation:this.state.password_confirmation,
+                changePassword:this.state.changePassword,
+                currentPassword:this.state.currentPassword
+            } )
+            .then(result => {
+                localStorage.setItem("user", JSON.stringify(result.data.updatedData));
+                if (result.data.success) NotificationManager.success(result.data.msg);
+                this.setState(prevState =>{
+                    return{
+                         ...prevState,
+                         changePassword: false,
+                         currentPassword: '',
+                         password: '',
+                         password_confirmation: ''
+                    }
+                 })                 
+                 
+            })
+            .catch(erro => {
+                this.setState({ errors: erro })
+                if(erro.response && erro.response.status===400)
+                    NotificationManager.error(erro.response.data.msg);
+                else
+                NotificationManager.error("Something Went Wrong");
+            });     
+        }
+        else{
         axios
             .put("http://localhost:9000/api/users/update", this.state)
             .then(result => {
@@ -85,7 +120,8 @@ class UserModal extends Component {
                 else
                 NotificationManager.error("Something Went Wrong");
             });
-    }
+        }
+        }
     render() {
         return (
             <div>

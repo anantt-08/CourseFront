@@ -372,6 +372,12 @@ const options = {
     ]
 };
 
+const defaultSorted = [{
+  dataField: 'name',
+  order: 'asc'
+}];
+
+
 const rowStyle = (row, rowIndex) => {
   const style = {};
     style.color = 'rgb(24, 43, 30)';
@@ -417,6 +423,7 @@ const { SearchBar } = Search;
         <BootstrapTable
             { ...props.baseProps }
             bootstrap4
+  defaultSorted={ defaultSorted  }
             pagination={paginationFactory(options)}
  hover
   rowStyle={ rowStyle }

@@ -192,6 +192,9 @@ const Topic = () => {
      if( filterr[filterr.length-1]=="pdf" || filterr[filterr.length-1]=="PDF"){
       return NotificationManager.error("Program Cant Be Of Format PDF's")
      }
+     if( courseid!=batchid){
+      return NotificationManager.error("CourseName And BatchName Must Be Same")
+     }
     const token = localStorage.getItem("token");  
     var formData=new FormData()
     //sorting oF FILES! in Correct ORDER
@@ -381,7 +384,7 @@ console.log(err)
 const fillBatches=()=>{
   return listt.map(function(item){
     return (
-        <MenuItem  value={item._id} key={item._id}>
+        <MenuItem  value={item.courseid} key={item._id}>
          {item.coursename}{" "}{item.week}{" "}{item.timing}
         </MenuItem>
     )

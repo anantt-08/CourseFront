@@ -109,3 +109,10 @@ font-family:cursive;
     margin:2px;
     font-family:Lucida Console, Courier, monospace;
      }  
+ @media only screen and (max-width: 550px) {
+    #select-filter-column-batch > option{
+        padding: 7px;
+        margin:2px;
+        font-size: 8px;
+         }  
+      }
