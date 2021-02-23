@@ -1,0 +1,55 @@
+.single-item {
+    margin-bottom: 60px;
+}
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.default-padding.bottom-less {
+    padding-top: 26px;
+}
+.course-cats-area  a {
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+    z-index: 1;
+    padding: 30px 15px;
+    border-radius: 10px;
+    padding-top: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+.text-light a {
+    color: #ffffff;
+}
+
+.course-cats-area  a span {
+    font-weight: 600;
+    display: block;
+    margin-top: 2px;
+}
+
+.course-cats-area  a::after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    height: 100%;
+    width: 100%;
+    background: #000000;
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0.7;
+}
+
+.course-cats-area  a h5 {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.6px;
+    color:white;
+}

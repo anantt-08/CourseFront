@@ -1,5 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
+import Addbatch from "./addbatch";
 import { makeStyles } from '@material-ui/core/styles';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import TreeView from '@material-ui/lab/TreeView';
@@ -206,6 +208,15 @@ props.handleDrawer()
         bgColor="#fcefe3"
       />
        </StyledTreeItem>
+       <StyledTreeItem
+          nodeId="600"
+          labelText="Add Batch"
+          labelIcon={LoyaltyIcon}
+          
+        onClick={()=>handleClick(<Addbatch />)}
+        color="#337d54"
+        bgColor="#7cd9a5"
+        />    
        <StyledTreeItem nodeId="500" labelText="Add Topics" labelIcon={AddCircleOutlineIcon}>
       <StyledTreeItem
         nodeId="11"

@@ -223,7 +223,7 @@ const selectOptions =   this.state.dictt;
       },
   {
     dataField: "program",
-    text: "ProgramName",
+    text: "Program",
     headerStyle: (colum, colIndex) => {
       return { textAlign:"center" ,fontWeight:"bold",background:"#858796",color:"white"};
   },

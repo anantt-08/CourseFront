@@ -14,12 +14,17 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import Avatar from '@material-ui/core/Avatar';
 import { IconButton } from '@material-ui/core';
 import "./progress.css";
+import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody } from 'mdbreact';
 const useStyles = makeStyles((theme) => ({
   root: {
     display:'flex',
     alignContent:'center',
      justifyContent:'center'
   },
+    yoo:{
+      width:20,
+      height:20
+    },
   hmm: {
     display: 'flex',
     '& > *': {
@@ -196,6 +201,12 @@ export default function CategoryInterface(props)
 return(
 <>
   <NotificationContainer />
+  <MDBContainer style={{ marginTop: 20 }} >
+      <MDBRow>
+        <MDBCol>
+          <MDBCard>
+            <MDBCardBody>
+             
 <div className={classes.root} >
    <div className={classes.maindiv}>
      <div className={classes.headingdiv}>
@@ -204,35 +215,35 @@ return(
      <form onSubmit={handleSubmit}> 
     <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-        <img src={`/${getErrorPic.cn}`}/> 
+        <img src={`/${getErrorPic.cn}`} className={classes.yoo}/> 
         <TextField
         value={getCategoryName}
         id="outlined-basic" label="Course Name" variant="outlined"   fullWidth onChange={(event)=>setCategoryName(event.target.value)} />
         </Grid>
 
         <Grid item xs={12} sm={6}>
-        <img src={`/${getErrorPic.cd}`}/> 
+        <img src={`/${getErrorPic.cd}`} className={classes.yoo}/> 
         <TextField 
         value={getCategoryDescription}
         onChange={(event)=>setCategoryDescription(event.target.value)} id="outlined-basic" label="Course Description" variant="outlined" fullWidth />
         </Grid>
          
         <Grid item xs={12} sm={6}>
-        <img src={`/${getErrorPic.cdu}`}/> 
+        <img src={`/${getErrorPic.cdu}`} className={classes.yoo}/> 
         <TextField 
                 value={getCategoryDuration}
         onChange={(event)=>setCategoryDuration(event.target.value)} id="outlined-basic" label="Course Duration" variant="outlined" fullWidth />
         </Grid>
 
         <Grid item xs={12} sm={6}>
-        <img src={`/${getErrorPic.cp}`}/> 
+        <img src={`/${getErrorPic.cp}`} className={classes.yoo}/> 
         <TextField 
         value={getCategoryPrerequisie}
         onChange={(event)=>setCategoryPrerequisie(event.target.value)} id="outlined-basic" label="Course Prerequisite" variant="outlined" fullWidth />
         </Grid>
         
         <Grid item xs={12} sm={6} style={{display:'flex',justifyContent:'center',alignItems:"center"}}>
-        <img src={`/${getErrorPic.ci}`}/> 
+        <img src={`/${getErrorPic.ci}`} className={classes.yoo}/> 
         <input
         className={classes.input}
         type="file"
@@ -279,6 +290,12 @@ return(
     </div>
 </div>
 { uploadPercentage > 0 && <ProgressBar now={uploadPercentage}  label={`${uploadPercentage}%`} className="meter" style={{marginBottom:"5px"}}/> }
+
+</MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
 </>
 )
 }

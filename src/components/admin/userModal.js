@@ -80,7 +80,7 @@ class UserModal extends Component {
             })
             .catch(erro => {
                 this.setState({ errors: erro })
-                if(erro.response && erro.response.status===401)
+                if(erro.response && erro.response.status===400)
                     NotificationManager.error(erro.response.data.msg);
                 else
                 NotificationManager.error("Something Went Wrong");

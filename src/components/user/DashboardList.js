@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import axios from "axios";
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,13 +8,16 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
+import Allcourses from "./allcourses";
 import Arrow from '@material-ui/icons/PlayArrowOutlined';
 import {useSelector} from "react-redux";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import  Spinner from "../../spinner";
+import Allbatch  from "./allbatches";
 import Topic from "./topic";
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
+import CollectionsBookmarkIcon from '@material-ui/icons/CollectionsBookmark';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Divider from '@material-ui/core/Divider';
 const useTreeItemStyles = makeStyles((theme) => ({
@@ -122,17 +125,27 @@ export default function DashboardListUser(props)  {
     const classes = useStyles();
     const auth = useSelector(state => state.auth);
     const [DATA,setDATA]=useState([]);
-
+    const [size, setSize] = useState(0);
     const user=JSON.parse(auth.user)
 const handleClick=(value)=>{
 
 props.handleView(value)
-props.handleDrawer()
+{size <700 ?  props.handleDrawerClose() :  props.handleDrawer();}
 }
 const handleClickk=(value)=>{ 
   props.handleView(value)
   props.handleDrawer()
   }
+
+  const updateSize = () =>{
+    setSize(window.innerWidth);
+  } 
+  useLayoutEffect(() => {
+          
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
  return(   
     <TreeView
     className={classes.root}
@@ -150,6 +163,24 @@ const handleClickk=(value)=>{
         color="#a250f5"
         bgColor="#f3e8fd"
         />
+   <StyledTreeItem
+          nodeId="200"
+          labelText="All Courses"
+          labelIcon={CollectionsBookmarkIcon}
+          
+        onClick={()=>handleClick(<Allcourses />)}
+        color="#e3742f"
+        bgColor="#fcefe3"
+        />
+        <StyledTreeItem
+          nodeId="400"
+          labelText="All Batches"
+          labelIcon={LoyaltyIcon}
+          
+        onClick={()=>handleClick(<Allbatch />)}
+        color="#337d54"
+        bgColor="#7cd9a5"
+        />      
      {  
     user.courseid.map((object, i) => 
       <StyledTreeItem
@@ -212,17 +243,6 @@ const handleClickk=(value)=>{
         color="#1a73e8"
         bgColor="#e8f0fe"
       />
-      <StyledTreeItem
-        nodeId="12"
-        labelText="Display"
-        labelIcon={Arrow}
-        onClick={()=>handleClick(<ProductDisplay />)} 
-       
-        color="#e3742f"
-        bgColor="#fcefe3"
-      />
-
-
        </StyledTreeItem>
     */}
     <Divider />

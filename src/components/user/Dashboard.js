@@ -264,7 +264,7 @@ fontFamily: " Times, Times New Roman, Georgia, serif",padding:"26px 0px 26px 0px
         <Divider />
     
          
-        <DashboardListUser handleDrawer={handleDrawer} handleView={handleView}/>
+        <DashboardListUser handleDrawer={handleDrawer} handleView={handleView} handleDrawerClose={handleDrawerClose}/>
        
         <Divider />
          

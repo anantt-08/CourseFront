@@ -45,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
       
       
     },
+    yoo:{
+      width:20,
+      height:20
+    }
 }))  
 
 export default function DisplayFormat()
@@ -191,7 +195,7 @@ return(
   <DialogContent>
     <Grid container spacing={2}>
         <Grid item xs={12}>
-        <img src={`/${getErrorPic.cn}`}/> 
+        <img src={`/${getErrorPic.cn}`} className={classes.yoo}/> 
         <TextField  value={getCategoryName} id="outlined-basic" label="Course Name" inputProps={{
             readOnly: true,
             disabled: true,
@@ -201,21 +205,21 @@ return(
         </Grid>
 
         <Grid item xs={12}>
-        <img src={`/${getErrorPic.cd}`}/> 
+        <img src={`/${getErrorPic.cd}`} className={classes.yoo}/> 
         <TextField value={getCategoryDescription} onChange={(event)=>setCategoryDescription(event.target.value)} id="outlined-basic" label="Category Description" variant="outlined" fullWidth />
         </Grid>
 
         <Grid item xs={12}>
-        <img src={`/${getErrorPic.cdu}`}/> 
+        <img src={`/${getErrorPic.cdu}`} className={classes.yoo}/> 
         <TextField value={getCategoryDuration} onChange={(event)=>setCategoryDuration(event.target.value)} id="outlined-basic" label="Category Duration" variant="outlined" fullWidth />
         </Grid> 
 
         <Grid item xs={12}>  
-        <img src={`/${getErrorPic.cp}`}/> 
+        <img src={`/${getErrorPic.cp}`} className={classes.yoo}/> 
         <TextField value={getCategoryPrerequisie} onChange={(event)=>setCategoryPrerequisie(event.target.value)} id="outlined-basic" label="Category Prerequisite" variant="outlined" fullWidth />
         </Grid>
 
-     <Grid item style={{display:'flex'}} xs={12}>
+     <Grid item style={{display:'flex'}} xs={12} >
      <Button variant="contained" color="primary" onClick={()=>handleSubmit()}>
       Edit Data
      </Button>
@@ -224,7 +228,7 @@ return(
       <Divider />
      </Grid>
      <Grid item xs={12} sm={6}>
-        <img src={`/${getErrorPic.ci}`}/> 
+        <img src={`/${getErrorPic.ci}`} className={classes.yoo}/> 
         <input
         className={classes.input}
         id="icon"
