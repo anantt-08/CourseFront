@@ -221,29 +221,6 @@ const handleClickk=(value)=>{
         color="#1a73e8"
         bgColor="#e8f0fe"
       />
-      <StyledTreeItem
-        nodeId="10"
-        labelText="Display"
-        labelIcon={Arrow}
-        onClick={()=>handleClick(<DisplayModel />)} 
-       
-        color="#e3742f"
-        bgColor="#fcefe3"
-      />
-       </StyledTreeItem>
-   
-
-       <StyledTreeItem nodeId="500" labelText="Product" labelIcon={Label}>
-      <StyledTreeItem
-        nodeId="11"
-        labelText="Add Product"
-        labelIcon={Arrow}
-        onClick={()=>handleClick(<ProductInterface />)} 
-       
-        color="#1a73e8"
-        bgColor="#e8f0fe"
-      />
-       </StyledTreeItem>
     */}
     <Divider />
     <Divider />

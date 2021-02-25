@@ -34,7 +34,15 @@ class UserModal extends Component {
     reset =  e =>{
         setTimeout(() => {
             NotificationManager.success("Reset to Normal")
-            this.setState(this.initialState)
+            this.setState({_id: JSON.parse(localStorage.getItem('user'))._id,
+            name: JSON.parse(localStorage.getItem('user')).name,
+            email: JSON.parse(localStorage.getItem('user')).email,
+            mobile: JSON.parse(localStorage.getItem('user')).mobile,
+            description: JSON.parse(localStorage.getItem('user')).description,
+            changePassword: false,
+            currentPassword: '',
+            password: '',
+            password_confirmation: ''})
         
         }, 400);
     }
@@ -64,7 +72,7 @@ class UserModal extends Component {
         }
         if(this.state.email==JSON.parse(localStorage.getItem('user')).email){
             axios
-            .put("http://localhost:9000/api/users/update",{
+            .put("http://localhost:9000/api/users/updae",{
                 _id:this.state._id,
                 name:this.state.name,
                 mobile:this.state.mobile,

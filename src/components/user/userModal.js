@@ -38,7 +38,15 @@ class UserModal extends Component {
     reset =  e =>{
         setTimeout(() => {
             NotificationManager.success("Reset to Normal")
-            this.setState(this.initialState)
+            this.setState({_id: JSON.parse(localStorage.getItem('user'))._id,
+            name: JSON.parse(localStorage.getItem('user')).name,
+            email: JSON.parse(localStorage.getItem('user')).email,
+            mobile: JSON.parse(localStorage.getItem('user')).mobile,
+            description: JSON.parse(localStorage.getItem('user')).description,
+            changePassword: false,
+            currentPassword: '',
+            password: '',
+            password_confirmation: ''})
         
         }, 400);
     }
@@ -93,6 +101,41 @@ class UserModal extends Component {
             NotificationManager.warning("Your Password Not Matched ! Please Check your password and confirm password");
             return false;
         }
+        if(this.state.email==JSON.parse(localStorage.getItem('user')).email){
+            axios
+            .put("http://localhost:9000/api/users/updae",{
+                _id:this.state._id,
+                name:this.state.name,
+                mobile:this.state.mobile,
+                description:this.state.description,
+                password:this.state.password,
+                password_confirmation:this.state.password_confirmation,
+                changePassword:this.state.changePassword,
+                currentPassword:this.state.currentPassword
+            } )
+            .then(result => {
+                localStorage.setItem("user", JSON.stringify(result.data.updatedData));
+                if (result.data.success) NotificationManager.success(result.data.msg);
+                this.setState(prevState =>{
+                    return{
+                         ...prevState,
+                         changePassword: false,
+                         currentPassword: '',
+                         password: '',
+                         password_confirmation: ''
+                    }
+                 })                 
+                 
+            })
+            .catch(erro => {
+                this.setState({ errors: erro })
+                if(erro.response && erro.response.status===400)
+                    NotificationManager.error(erro.response.data.msg);
+                else
+                NotificationManager.error("Something Went Wrong");
+            });     
+        }
+        else{
         axios
             .put("http://localhost:9000/api/users/update", this.state)
             .then(result => {
@@ -106,7 +149,7 @@ class UserModal extends Component {
                          password: '',
                          password_confirmation: ''
                     }
-                 })   
+                 })                 
                  
             })
             .catch(erro => {
@@ -116,6 +159,7 @@ class UserModal extends Component {
                 else
                 NotificationManager.error("Something Went Wrong");
             });
+        }
     }
     render() {
         return (
