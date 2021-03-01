@@ -9,6 +9,7 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+import Grid from '@material-ui/core/Grid';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -97,6 +98,35 @@ export default class Userlist extends Component{
         hidden: true,
         editable: false
       },
+      {
+        dataField: "courseid",
+        text: "Courses",
+        headerStyle: (colum, colIndex) => {
+          return { fontWeight:"bold",background:"#858796",color:"white"};
+      },
+      style: {
+        textAlign:"center"
+      },
+      editable: false,
+      formatter: (cellContent, row,formatExtraData) =>{
+        return  (
+          <div style={{ outline: "none" }}>
+          <Grid container spacing={1} style={{ cursor: "pointer" }}>
+            {row.courseid.map((item) => {
+              return (
+                <>
+                    <Grid item xs={12}> 
+                      {item.name}
+                    </Grid>
+                </>
+              );
+            })}
+          </Grid>
+        </div>
+             )
+    }
+
+    },
       {
         dataField: "name",
         text: "UserName",

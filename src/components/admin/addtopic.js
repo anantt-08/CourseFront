@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./javascript";
 import "./progress.css";
+//import $ from "jquery";
 import {ProgressBar} from 'react-bootstrap';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -23,6 +25,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import { Icon, InlineIcon } from '@iconify/react';
 import filePpt2Fill from '@iconify-icons/ri/file-ppt-2-fill';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,9 +108,17 @@ const Topic = () => {
   const[batchid,setBatchid]=useState("");
   const[batchname,setBatchname]=useState("");
   const[listt,setListt]=useState([]);
+  const[finaly,setFinally]=useState("");
   const [hover, setHover] = useState(false);
   const  onFileUpload =(event) => {
     
+    // (function ($) {
+    //   $(document).ready(function(){
+    //   $('#demo-simple-select').change(function(){
+    //     $(".yoho").parents('ul').css("max-width", "527px");
+    //   })
+    //   })
+    // })(jQuery);
     event.preventDefault();
 
     let id = parseInt(event.target.id);
@@ -192,7 +203,7 @@ const Topic = () => {
      if( filterr[filterr.length-1]=="pdf" || filterr[filterr.length-1]=="PDF"){
       return NotificationManager.error("Program Cant Be Of Format PDF's")
      }
-     if( courseid!=batchid){
+     if( courseid!=finaly){
       return NotificationManager.error("CourseName And BatchName Must Be Same")
      }
     const token = localStorage.getItem("token");  
@@ -264,6 +275,7 @@ setDate(null)
 setFilename("")
 setCourseid("")
 setCoursename("")
+setFinally("")
   NotificationManager.success("Success!!") 
     }, 1000);
   })
@@ -305,9 +317,11 @@ setCoursename("")
   setFilename("")
   setCourseid("")
   setCoursename("")
+  setFinally("")
             NotificationManager.success("Reset Values!") 
     }
   useEffect(() => {
+    //$('.yoho').css('background-color', "red");
    fetchCategory();
    fetchBatch();
   }, []);
@@ -338,8 +352,7 @@ setCoursename("")
     Authorization: token,
   },
 }).then((result)=>{
-  setListt(result.data.userlist)
- 
+  setListt(result.data.userlist) 
 })
 .catch((err)=>
 {console.log(err)})
@@ -379,16 +392,22 @@ console.log(err)
     var text = event.nativeEvent.target.outerText
     setBatchid(event.target.value);
     setBatchname(text);
+    setFinally(event.nativeEvent.target.attributes.name.value)
     }
 
 const fillBatches=()=>{
   return listt.map(function(item){
     return (
-        <MenuItem  value={item.courseid} key={item._id}>
+     listt.length > 10 ? 
+        (<MenuItem className="yoho" style={window.innerWidth> 500 ? {width:"50%",float:"left"}: {}} name={item.courseid} value={item._id} key={item._id}>
          {item.coursename}{" "}{item.week}{" "}{item.timing}
-        </MenuItem>
+        </MenuItem>) :
+        (<MenuItem  value={item._id} name={item.courseid} key={item._id}>
+        {item.coursename}{" "}{item.week}{" "}{item.timing}
+       </MenuItem>)
     )
-  })
+        }
+  )
  }
   
    const handleClickA = event => {
@@ -469,7 +488,7 @@ console.log(files,"mm")
         <InputLabel id="demo-simple-select-label">Select Batch</InputLabel>
         <Select
           labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          id="demo-simple-selectt"
           value={batchid}
           onChange={(event)=>handleBatch(event)}
         >  
@@ -645,3 +664,4 @@ console.log(files,"mm")
 };
 
 export default Topic;
+

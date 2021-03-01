@@ -26,14 +26,34 @@ class Register extends Component {
       list:[],
       lisst:[],
       courseid:"",
-      coursename:""
+      coursename:"",
+      batchid:"",
+      batchname:"",
+      listt:[],
+      finaly:""
     };
   }
-  componentDidMount = ()=>{
+  componentWillMount = ()=>{
     this.fetchCategory();
+    this.fetchBatch();
   }
+   fetchBatch=()=>{
+    const token = localStorage.getItem("token");  
+    axios.get("http://localhost:9000/api/batches/find",{
+  headers: {
+    Authorization: token,
+  },
+}).then((result)=>{
+  this.setState({listt:result.data.userlist})
+})
+.catch((err)=>
+{console.log(err)})
+    }
   handleForm = e => {
     e.preventDefault();
+    if( this.state.courseid!=this.state.finaly){
+      return NotificationManager.error("CourseName And BatchName Must Be Same")
+     }
     const data = {
       name: this.state.name,
       email: this.state.email,
@@ -41,9 +61,9 @@ class Register extends Component {
       description:this.state.description,
 mobile:this.state.mobile,
 courseid:this.state.courseid,
-coursename:this.state.coursename
+coursename:this.state.coursename,
+batchname:this.state.batchname
     };
-    console.log(data)
     const token = localStorage.getItem("token");
    // console.log(this.state.courseid)
     axios
@@ -60,7 +80,10 @@ coursename:this.state.coursename
       description:"",
 mobile:"",
 courseid:"",
-coursename:""
+coursename:"",
+batchname:"",
+batchid:"",
+finaly:""
       })
       NotificationManager.success(result.data.msg);
     })
@@ -118,6 +141,14 @@ console.log(err)
     });
     }
 
+handleBatch=(event)=>{
+      var text = event.nativeEvent.target.outerText
+      this.setState({ 
+        batchid:event.target.value,
+      batchname:text
+    ,finaly:event.nativeEvent.target.attributes.name.value});
+      }
+  
    fillCategories=()=>{
       return this.state.lisst.map(function(item){
         return (
@@ -127,6 +158,23 @@ console.log(err)
         )
       })
      }
+     fillBatches=()=>{
+     let a=  this.state.listt.length
+      return this.state.listt.map(function(item){
+        return (
+       a > 10 ? 
+            (<MenuItem className="yoho" style={window.innerWidth> 500 ? {width:"50%",float:"left"}: {}} 
+            name={item.courseid} value={item._id} key={item._id}>
+             {item.coursename}{" "}{item.week}{" "}{item.timing}
+            </MenuItem>) :
+            (<MenuItem  name={item.courseid}  value={item._id} key={item._id}>
+            {item.coursename}{" "}{item.week}{" "}{item.timing}
+           </MenuItem>)
+        )
+            }
+      )
+     }
+       
 
   render() {
    // console.log(this.state.list)
@@ -164,7 +212,37 @@ console.log(err)
                 </div>
                 </div>  
                  <div className="grey-text row  m-0 p-0">
-                 <div className="col-md-6 m-0 p-0">
+                 <div className="col-md-6  p-0">
+       <FormControl style={{width:"95%"}} >
+        <InputLabel id="demo-simple-select-label">Course Name</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={this.state.courseid}
+          onChange={(event)=>this.handleCategory(event)}
+        >  
+       
+          {this.fillCategories()}
+        </Select>
+      </FormControl> 
+          </div>    
+       <div className="col-md-6  p-0">
+       <FormControl style={{width:"95%"}}  >
+        <InputLabel id="demo-simple-select-label">Select Batch</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={this.state.batchid}
+          onChange={(event)=>this.handleBatch(event)}
+        >  
+          {this.fillBatches()}
+        </Select>
+      </FormControl> 
+               </div>     
+       
+                  </div>
+  <div className="grey-text row m-0 p-0">
+  <div className="col-md-6 m-0 p-0">
                    <MDBInput
                     label="Mobile Number"
                     icon="phone"
@@ -190,9 +268,7 @@ console.log(err)
       />
        <hr style={{marginTop:" -0.1rem",width:"94%"}} />
                   </div>
-                  </div>
-  <div className="grey-text row m-0 p-0">
-  <div className="col-md-6 m-0 p-0">
+               <div className="col-md-12 m-0 p-0">
        <MDBInput
                     label="Description"
                     icon="user-md"
@@ -202,22 +278,6 @@ console.log(err)
                      name="description" onChange={this.handleInput}
                   /> 
                </div>
-               <div className="col-md-6 m-0 p-0">
-       <div className="col-md-6 ml-sm-4 mt-3 p-0">
-       <FormControl fullWidth >
-        <InputLabel id="demo-simple-select-label">Course Name</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={this.state.courseid}
-          onChange={(event)=>this.handleCategory(event)}
-        >  
-       
-          {this.fillCategories()}
-        </Select>
-      </FormControl> 
-          </div>
-               </div>             
                 <div className="text-center py-1 " style={{ display:"block",margin:"auto"}}>
                   <MDBBtn color="cyan" type="submit" >
                     Register

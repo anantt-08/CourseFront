@@ -122,6 +122,9 @@ export default function CategoryInterface(props)
     
     if(!error)
     {
+      if(getCategoryDescription.length > 35){
+        return NotificationManager.error("Description Cant Be more Than 35 words!")
+      }
       const token = localStorage.getItem("token");  
     var formData=new FormData()
     formData.append('name',getCategoryName)

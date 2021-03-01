@@ -33,9 +33,11 @@ const Allcourses = () => {
             <div className="single-item equal-height col-md-4 col-sm-6" style={{height: "133px"}}>
                 <div className="item"><a 
                  style={{backgroundImage:`url(${process.env.PUBLIC_URL + '/images/' + item.image})` }}>
-                     <h5>{item.name}</h5><span>{item.description}</span>
+                     <h5>{item.name}</h5>
                      <span>Duration:{item.duration}</span>
-                     <span style={{fontStyle:"italic",fontWeight:"500"}}>PreRequisite-{item.prerequisie}</span></a>
+                     <span style={{fontStyle:"italic",fontWeight:"500"}}>PreRequisite-{item.prerequisie}</span>
+                     <span>{item.description}</span>
+                     </a>
                      </div> 
                      </div>
              )
