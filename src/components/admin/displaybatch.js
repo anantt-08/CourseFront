@@ -116,7 +116,7 @@ export default function Showbatch()
             {rowData.status =="Upcoming" ? <> </> :
       rowData.status =="Ongoing" ? <>  <Toggle
       name="changeStatus"
-      checked={false}
+      defaultChecked={false}
       onClick={() => {setShow(true);setbatchidyo(rowData._id) }} />
  </> : <></> }         
 

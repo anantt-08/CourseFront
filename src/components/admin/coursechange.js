@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
-
+import Status from "./status";
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import {
   NotificationContainer,
@@ -185,7 +185,7 @@ getstatuss = async(id) =>{
      Authorization: token,
    },
  })
- console.log(resultt)
+ console.log(resultt.data.userlist.status,"Yipeeee")
  return resultt.data.userlist.status
 }
   UNSAFE_componentWillMount() {
@@ -381,12 +381,7 @@ console.log("y",this.state.optio)
           <div style={{ outline: "none" }}>
           <Grid container spacing={1}>
             {row.batchname.map((item) => {
-               let statuss=this.getstatuss(item.id)
-              return (
-                <>
-                   {`${item.name}${statuss}`}
-                </>
-              );
+            return  <Status id={item.id} name={item.name}/>
             })}
           </Grid>
         </div>

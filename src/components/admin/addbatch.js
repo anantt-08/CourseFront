@@ -92,7 +92,7 @@ const Addbatch = () => {
         startdate:date,
         courseid:courseid,
         duration:duration,
-        status:"Upcomming",
+        status:"Upcoming",
         lastdate:dateee
       };
       const token = localStorage.getItem("token");

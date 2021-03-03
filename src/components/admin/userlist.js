@@ -113,19 +113,16 @@ export default class Userlist extends Component{
   filter: textFilter(),
       formatter: (cellContent, row,formatExtraData) =>{
         return  (
-          <div style={{ outline: "none" }}>
-          <Grid container spacing={1} style={{ cursor: "pointer" }}>
-            {row.courseid.map((item) => {
+         
+            row.courseid.map((item) => {
               return (
                 <>
-                    <Grid item xs={12}> 
+                   
                       {item.name}
-                    </Grid>
                 </>
               );
-            })}
-          </Grid>
-        </div>
+            })
+       
              )
     }
 
@@ -134,10 +131,16 @@ export default class Userlist extends Component{
         dataField: "name",
         text: "UserName",
         sort: true,
+        
+  filter: textFilter(),
         headerStyle: (colum, colIndex) => {
           return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word',};
       },
-      
+      formatter: (cellContent, row) =>{
+        return  (
+         {row.name}
+             )
+    }    
         // style: (cell, row, rowIndex) => {
         //  return {
         //    backgroundColor: rowIndex % 2 === 0 ? 'red' : 'blue' 
