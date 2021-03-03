@@ -35,19 +35,21 @@ class Register extends Component {
   }
   componentWillMount = ()=>{
     this.fetchCategory();
-    this.fetchBatch();
   }
-   fetchBatch=()=>{
+   fetchBatch=(id)=>{
     const token = localStorage.getItem("token");  
-    axios.get("http://localhost:9000/api/batches/find",{
+    axios.get(`http://localhost:9000/api/batches/find/${id}`,{
   headers: {
     Authorization: token,
   },
 }).then((result)=>{
-  this.setState({listt:result.data.userlist})
+  if(result.data.user.length===0){
+    NotificationManager.error("Course Has No Upcomming/Ongoing Batches")
+  }
+  this.setState({listt:result.data.user})
 })
 .catch((err)=>
-{console.log(err)})
+{console.log(err)}) 
     }
   handleForm = e => {
     e.preventDefault();
@@ -62,7 +64,8 @@ class Register extends Component {
 mobile:this.state.mobile,
 courseid:this.state.courseid,
 coursename:this.state.coursename,
-batchname:this.state.batchname
+batchname:this.state.batchname,
+batchid:this.state.batchid
     };
     const token = localStorage.getItem("token");
    // console.log(this.state.courseid)
@@ -115,6 +118,7 @@ finaly:""
   var text = event.nativeEvent.target.outerText
   this.setState({courseid:event.target.value,
   coursename:text})
+  this.fetchBatch(event.target.value);
   }
   fetchCategory=()=>{
     const token = localStorage.getItem("token");  

@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'; 
 import "bootstrap/dist/css/bootstrap.min.css";
+import TextField from '@material-ui/core/TextField';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -74,17 +75,25 @@ const Addbatch = () => {
   const[time,setTime]=useState("");
   const[courseid,setCourseid]=useState("");
   const [week,setWeek]=useState("select");
+  const[duration,setDuration]=useState("select");
   const  handleSubmit= (e)=> {
     e.preventDefault();
      if(week=="select"){
          return NotificationManager.error("Select WeekDays (Cant Be Empty)!") 
      }
+     if(duration=="select"){
+      return NotificationManager.error("Select Duration (Cant Be Empty)!") 
+  }
+  let dateee=new Date().toString().split(" ").slice(1, 4).join(" ")
      const data = {
         coursename:coursename,
         timing:time,
         week:week,
         startdate:date,
-        courseid:courseid
+        courseid:courseid,
+        duration:duration,
+        status:"Upcomming",
+        lastdate:dateee
       };
       const token = localStorage.getItem("token");
       axios
@@ -102,17 +111,25 @@ const Addbatch = () => {
           setTime("");
           setCourseid("");
           setWeek("select");
+          setDuration("select");
         NotificationManager.success(result.data.msg);
       })
       .catch((err) => {
         console.log(err)
     })
 }  
+const handleSelectt=(e)=>{
+  setDuration(e)
+  }
+
     const handleSelect=(e)=>{
         setWeek(e)
         }
+     
   useEffect(() => {
    fetchCategory();
+  //  var d=new Date(new Date().toString().split(" ").slice(1, 4).join(" "))
+  // alert(new Date(d.setMonth(d.getMonth() + 3)))
   }, []);
 
  
@@ -228,6 +245,7 @@ console.log(err)
             className="myDatePicker"
              height="20px"
              width="40px"
+             minDate={new Date().setDate(new Date().getDate() + 1)}
             dateFormat="dd/MM/yyyy"
             isClearable={true}
             placeholderText="Select Starting Date Of Batch:"
@@ -271,7 +289,37 @@ console.log(err)
               <Dropdown.Item eventKey="WEEKENDs">WEEKENDs</Dropdown.Item>
       </DropdownButton>
      </Grid>
-
+     <Grid item xs={12} sm={6} style={{display:"block"}}>
+      <label style={{fontFamily:"cursive",fontStyle:"italic",fontWeight:"500",fontSize:"18px", marginTop:"20px",width:"100%"}} >
+                        
+                             Choose Duration Of Batch:
+                            </label> 
+      <DropdownButton
+      alignRight
+      title={duration}
+      onSelect={handleSelectt}
+      className="dropdownnn"
+        >
+           <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="1">1</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="2">2</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="3">3</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="4">4</Dropdown.Item>
+          <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="5">5</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="6">6</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}} eventKey="7">7</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="8">8</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}} eventKey="9">9</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}} eventKey="10">10</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}} eventKey="11">11</Dropdown.Item>
+              <Dropdown.Item className="dropdownnn" style={{width:"50%"}}eventKey="12">12</Dropdown.Item>
+      </DropdownButton>
+      <span style={{fontSize:"22px",fontStyle:"italic",marginTop:"22px",textDecoration:"underline",position:"absolute",color:"red",fontWeight:"600"}}>Months</span>
+     </Grid>
+     <Grid item xs={12} sm={6} style={{marginTop:"7px"}} id="yohooney" >
+        <TextField
+        value="Upcoming"
+       label="Batch Status" variant="outlined" disabled  fullWidth />
+        </Grid>
      <MuiPickersUtilsProvider utils={DateFnsUtils}>
      <Grid item xs={12} sm={6}>
      <FormControl fullWidth > 

@@ -15,6 +15,7 @@ import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import {
   NotificationContainer,
   NotificationManager,
@@ -95,7 +96,8 @@ passresult=() =>{
  const token = localStorage.getItem("token");  
 	let body={
 		courseid:this.state.selectedlistt,
-		batchname:this.state.batchname
+		batchname:this.state.batchname,
+    batchid:this.state.batchid
 	}
  axios.put(`http://localhost:9000/api/users/changecourseid/${this.state.idd}`,body,{
         headers: {
@@ -149,10 +151,11 @@ onRemove(selectedList, removedItem,id) {
         Authorization: token,
       },
     }).then((res)=>{
-      let bitch=res.data.userlist.batchname.filter((e)=>e.includes(removedItem.name))[0]
+      let bitch=res.data.userlist.batchname.filter((e)=>e.name.includes(removedItem.name))[0]
       let body={
         courseid:selectedList,
-        batchname:bitch
+        batchname:bitch.name,
+        batchid:bitch.id
       }
       axios.put(`http://localhost:9000/api/users/removechangecourseid/${id}`,body,{
         headers: {
@@ -174,7 +177,17 @@ onRemove(selectedList, removedItem,id) {
     })
    
 }
-
+getstatuss = async(id) =>{
+  const token = localStorage.getItem("token");
+ let resultt=await axios
+ .get(`http://localhost:9000/api/batches/findbyid/${id}`, {
+   headers: {
+     Authorization: token,
+   },
+ })
+ console.log(resultt)
+ return resultt.data.userlist.status
+}
   UNSAFE_componentWillMount() {
     const token = localStorage.getItem("token");
     window.addEventListener('resize', this.updateDimensions);
@@ -244,13 +257,15 @@ console.log("y",this.state.optio)
         dataField: "name",
         text: "UserName",
         sort: true,
+        
         headerStyle: (colum, colIndex) => {
-          return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+          return { fontWeight:"bold",background:"#858796",color:"white"};
       },
       },
       {
         dataField: "email",
         text: "Email",
+    
         sort: true,
         headerStyle: (colum, colIndex) => {
           return { fontWeight:"bold",background:"#858796",color:"white" 
@@ -261,6 +276,8 @@ console.log("y",this.state.optio)
     {
       dataField: "type",
       text: "Alloted Course",
+      
+  filter: textFilter(),
       headerStyle: (colum, colIndex) => {
         return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '320px' , wordWrap:'break-word'};
     },
@@ -313,6 +330,8 @@ console.log("y",this.state.optio)
     {
       dataField: "batchname",
       text: "Alloted Batch",
+      
+  filter: textFilter(),
       headerStyle: (colum, colIndex) => {
         return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '300px' , wordWrap:'break-word'};
     },
@@ -328,9 +347,44 @@ console.log("y",this.state.optio)
             {row.batchname.map((item) => {
               return (
                 <>
-                    <Grid item xs={12}> 
-                      {item}
+                    <Grid item xs={12} id={item.id}> 
+                      {item.name}
                     </Grid>
+                </>
+              );
+            })}
+          </Grid>
+        </div>
+             )
+    }
+
+    }    ,
+    {
+      dataField: "status",
+      text: "Current Status",
+      
+  filter: textFilter(),
+    //   headerStyle: (colum, colIndex) => {
+    //     return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '300px' , wordWrap:'break-word'};
+    // },
+        headerStyle: (colum, colIndex) => {
+          return { fontWeight:"bold",background:"#858796",color:"white" 
+}
+      },
+      style: {
+        textAlign:"center"
+      },
+      editable: false,
+      formatter: (cellContent, row) =>{
+       
+        return  (
+          <div style={{ outline: "none" }}>
+          <Grid container spacing={1}>
+            {row.batchname.map((item) => {
+               let statuss=this.getstatuss(item.id)
+              return (
+                <>
+                   {`${item.name}${statuss}`}
                 </>
               );
             })}
@@ -353,6 +407,8 @@ console.log("y",this.state.optio)
     dataField: "name",
     text: "UserName",
     sort: true,
+    
+  filter: textFilter(),
     headerStyle: (colum, colIndex) => {
       return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
   },
@@ -368,6 +424,8 @@ console.log("y",this.state.optio)
       textAlign:"center"
     },
     editable: false,
+    
+  filter: textFilter(),
     formatExtraData:this.state.optio,
     formatter: (cellContent, row,formatExtraData) =>{
     //   console.log(row.courseid,"MyMY")
@@ -420,6 +478,8 @@ console.log("y",this.state.optio)
     },
     editable: false,
     formatExtraData:this.state.optio,
+    
+  filter: textFilter(),
     formatter: (cellContent, row,formatExtraData) =>{
       return  (
         <div style={{ outline: "none" }}>
@@ -427,8 +487,8 @@ console.log("y",this.state.optio)
           {row.batchname.map((item) => {
             return (
               <>
-                  <Grid item xs={12}> 
-                    {item}
+                  <Grid item xs={12} id={item.id}> 
+                    {item.name}
                   </Grid>
               </>
             );
@@ -521,6 +581,7 @@ const { SearchBar } = Search;
             pagination={paginationFactory(options)}
  hover
  
+ filter={ filterFactory() }
  wrapperClasses="table-responsivee"
   rowStyle={ rowStyle }
         />
@@ -544,7 +605,7 @@ const { SearchBar } = Search;
           <span style={{fontStyle:"italic"}}> Select Batch For Chosen Course </span></DialogTitle>
         <DialogContent>
         {this.state.empty ?
-        <p style={{color:"red",fontStyle:"italic"}}>Empty Add Batch For this course</p>
+        <p style={{color:"red",fontStyle:"italic"}}>No Upcomming/Ongoing Batches For his Course</p>
         :
         <FormControl fullWidth >
         <InputLabel id="demo-simple-select-label">Select Batch</InputLabel>

@@ -14,6 +14,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 export default class Userlist extends Component{
@@ -102,12 +103,14 @@ export default class Userlist extends Component{
         dataField: "courseid",
         text: "Courses",
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white"};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '180px' , wordWrap:'break-word',};
       },
       style: {
         textAlign:"center"
       },
       editable: false,
+      
+  filter: textFilter(),
       formatter: (cellContent, row,formatExtraData) =>{
         return  (
           <div style={{ outline: "none" }}>
@@ -132,7 +135,7 @@ export default class Userlist extends Component{
         text: "UserName",
         sort: true,
         headerStyle: (colum, colIndex) => {
-          return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word',};
       },
       
         // style: (cell, row, rowIndex) => {
@@ -144,23 +147,58 @@ export default class Userlist extends Component{
       {
         dataField: "email",
         text: "Email",
+        
         headerStyle: (colum, colIndex) => {
           return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
       }
       },
       {
+        dataField: "batchname",
+        text: "Alloted Batch",
+        
+        filter: textFilter(),
+        headerStyle: (colum, colIndex) => {
+          return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',};
+      },
+        style: {
+          textAlign:"center"
+        },
+        editable: false,
+        formatExtraData:this.state.optio,
+        formatter: (cellContent, row,formatExtraData) =>{
+          return  (
+            <div style={{ outline: "none" }}>
+            <Grid container style={{ cursor: "pointer" }}>
+              {row.batchname.map((item) => {
+                return (
+                  <>
+                      <Grid item xs={12}> 
+                        {item.name}
+                      </Grid>
+                  </>
+                );
+              })}
+            </Grid>
+          </div>
+               )
+      }    
+    }
+      ,
+      {
         dataField: "mobile",
         text: "MobileNo",
         sort: true,
+
         headerStyle: (colum, colIndex) => {
-          return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word',};
       },
       },
      {
         dataField: "birth",
         text: "BirthDate",
+        
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white"};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '138px' , wordWrap:'break-word',};
       },
       }
     ,
@@ -212,7 +250,7 @@ match ?
     dataField: "_id",
     text: "Id",
     hidden: true,
-    editable: false,
+    editable: false
   },
   {
     dataField: "name",
@@ -414,6 +452,7 @@ const { SearchBar } = Search;
    search
    hover
 >
+  
   {
     props => (
       <div>
@@ -428,6 +467,7 @@ const { SearchBar } = Search;
         <BootstrapTable
             { ...props.baseProps }
             bootstrap4
+  filter={ filterFactory() }
             wrapperClasses="table-responsiveeee"
   defaultSorted={ defaultSorted  }
             pagination={paginationFactory(options)}

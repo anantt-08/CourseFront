@@ -18,3 +18,12 @@ font-family:cursive;
         font-family:cursive;
         }
   }
+ .dropdownnn{
+     display: inline-block !important;
+     margin: 0px  !important;
+ } 
+
+ .close {
+    color: #fff; 
+    opacity: 1;
+}

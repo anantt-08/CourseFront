@@ -203,9 +203,9 @@ const Topic = () => {
      if( filterr[filterr.length-1]=="pdf" || filterr[filterr.length-1]=="PDF"){
       return NotificationManager.error("Program Cant Be Of Format PDF's")
      }
-     if( courseid!=finaly){
-      return NotificationManager.error("CourseName And BatchName Must Be Same")
-     }
+    //  if( courseid!=finaly){
+    //   return NotificationManager.error("CourseName And BatchName Must Be Same")
+    //  }
     const token = localStorage.getItem("token");  
     var formData=new FormData()
     //sorting oF FILES! in Correct ORDER
@@ -323,7 +323,6 @@ setFinally("")
   useEffect(() => {
     //$('.yoho').css('background-color', "red");
    fetchCategory();
-   fetchBatch();
   }, []);
 
   useEffect(() => {
@@ -345,14 +344,17 @@ setFinally("")
     setBirth(value)
   }
 
-  const fetchBatch=()=>{
+  const fetchBatch=(id)=>{
     const token = localStorage.getItem("token");  
-    axios.get("http://localhost:9000/api/batches/find",{
+    axios.get(`http://localhost:9000/api/batches/find/${id}`,{
   headers: {
     Authorization: token,
   },
 }).then((result)=>{
-  setListt(result.data.userlist) 
+  if(result.data.user.length===0){
+    NotificationManager.error("Course Has No Upcomming/Ongoing Batches")
+  }
+  setListt(result.data.user) 
 })
 .catch((err)=>
 {console.log(err)})
@@ -377,7 +379,9 @@ console.log(err)
       var text = event.nativeEvent.target.outerText
       setCourseid(event.target.value);
       setCoursename(text);
-      }
+
+      fetchBatch(event.target.value);
+    }
 
  const fillCategories=()=>{
     return list.map(function(item){
