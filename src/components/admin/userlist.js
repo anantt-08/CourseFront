@@ -91,7 +91,7 @@ export default class Userlist extends Component{
    
 //console.log(this.state.width)
     const matches= (this.state.width>765) ? true:false 
-    const match= (this.state.width<660) ? false:true 
+    const matchtick= (this.state.width<1300) ? false:true 
     const columns = matches ? [
       {
         dataField: "_id",
@@ -103,44 +103,53 @@ export default class Userlist extends Component{
         dataField: "courseid",
         text: "Courses",
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '180px' , wordWrap:'break-word',};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', minWidth: '170px', width: '180px' , wordWrap:'break-word',};
       },
       style: {
-        textAlign:"center"
+        textAlign:"center",
+        fontWeight:"500",
+        fontStyle:"italic"
       },
       editable: false,
       
   filter: textFilter(),
       formatter: (cellContent, row,formatExtraData) =>{
         return  (
-         
-            row.courseid.map((item) => {
+          <div style={{ outline: "none" }}>
+          <Grid container spacing={1} style={{ cursor: "pointer" }}>
+            {row.courseid.map((item) => {
               return (
                 <>
-                   
+                    <Grid item xs={12}> 
                       {item.name}
+                    </Grid>
                 </>
               );
-            })
-       
+            })}
+          </Grid>
+        </div>
              )
-    }
-
+    },
+    filterValue: (cell, row) => { return  (
+           
+      cell.map((item) => {
+        return (
+             item.name
+        );
+      })
+  
+       )}
     },
       {
         dataField: "name",
         text: "UserName",
         sort: true,
         
-  filter: textFilter(),
+filter: textFilter(),
         headerStyle: (colum, colIndex) => {
           return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word',};
       },
-      formatter: (cellContent, row) =>{
-        return  (
-         {row.name}
-             )
-    }    
+      
         // style: (cell, row, rowIndex) => {
         //  return {
         //    backgroundColor: rowIndex % 2 === 0 ? 'red' : 'blue' 
@@ -151,8 +160,9 @@ export default class Userlist extends Component{
         dataField: "email",
         text: "Email",
         
+        filter: textFilter(),
         headerStyle: (colum, colIndex) => {
-          return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
+          return { 'whiteSpace': 'nowrap', width: '194px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
       }
       },
       {
@@ -161,10 +171,13 @@ export default class Userlist extends Component{
         
         filter: textFilter(),
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',};
+          return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', minWidth: '200px',width: '218px' , wordWrap:'break-word',};
       },
         style: {
-          textAlign:"center"
+          textAlign:"center",
+          fontStyle:"italic",
+          color:"darkgreen",
+          fontWeight:"500"
         },
         editable: false,
         formatExtraData:this.state.optio,
@@ -184,7 +197,16 @@ export default class Userlist extends Component{
             </Grid>
           </div>
                )
-      }    
+      },
+      filterValue: (cell, row) => { return  (
+             
+        cell.map((item) => {
+          return (
+               item.name
+          );
+        })
+    
+         )}      
     }
       ,
       {
@@ -193,7 +215,7 @@ export default class Userlist extends Component{
         sort: true,
 
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word',};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '138px' , wordWrap:'break-word',};
       },
       },
      {
@@ -201,7 +223,7 @@ export default class Userlist extends Component{
         text: "BirthDate",
         
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '138px' , wordWrap:'break-word',};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '128px' , wordWrap:'break-word',};
       },
       }
     ,
@@ -247,7 +269,6 @@ export default class Userlist extends Component{
       
     ]
 :
-match ?
 [
   {
     dataField: "_id",
@@ -256,30 +277,117 @@ match ?
     editable: false
   },
   {
+    dataField: "courseid",
+    text: "Courses",
+    headerStyle: (colum, colIndex) => {
+      return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', minWidth: '170px', width: '180px' , wordWrap:'break-word',};
+  },
+  style: {
+    textAlign:"center",
+    fontWeight:"500",
+    fontStyle:"italic"
+  },
+  editable: false,
+  
+filter: textFilter(),
+  formatter: (cellContent, row,formatExtraData) =>{
+    return  (
+      <div style={{ outline: "none" }}>
+      <Grid container spacing={1} style={{ cursor: "pointer" }}>
+        {row.courseid.map((item) => {
+          return (
+            <>
+                <Grid item xs={12}> 
+                  {item.name}
+                </Grid>
+            </>
+          );
+        })}
+      </Grid>
+    </div>
+         )
+},
+filterValue: (cell, row) => { return  (
+       
+  cell.map((item) => {
+    return (
+         item.name
+    );
+  })
+
+   )}
+},
+  {
     dataField: "name",
     text: "UserName",
     sort: true,
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+      return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '148px' , wordWrap:'break-word',};
   },
+ 
   },
   {
     dataField: "email",
     text: "Email",
+    
+    filter: textFilter(),
     headerStyle: (colum, colIndex) => {
-      return { 'whiteSpace': 'nowrap', width: '198px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
-  },
-  sort: true
+      return { 'whiteSpace': 'nowrap', width: '194px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
+  }
   },
   {
     dataField: "mobile",
     text: "MobileNo",
     sort: true,
+
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
-  },
+      return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '138px' , wordWrap:'break-word',};
   }
-,
+  },
+      {
+        dataField: "batchname",
+        text: "Alloted Batch",
+        
+        filter: textFilter(),
+        headerStyle: (colum, colIndex) => {
+          return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', minWidth: '190px',width: '218px' , wordWrap:'break-word',};
+      },
+        style: {
+          textAlign:"center",
+          fontStyle:"italic",
+          color:"darkgreen",
+          fontWeight:"500"
+        },
+        editable: false,
+        formatExtraData:this.state.optio,
+        formatter: (cellContent, row,formatExtraData) =>{
+          return  (
+            <div style={{ outline: "none" }}>
+            <Grid container style={{ cursor: "pointer" }}>
+              {row.batchname.map((item) => {
+                return (
+                  <>
+                      <Grid item xs={12}> 
+                        {item.name}
+                      </Grid>
+                  </>
+                );
+              })}
+            </Grid>
+          </div>
+               )
+      },
+      filterValue: (cell, row) => { return  (
+             
+        cell.map((item) => {
+          return (
+               item.name
+          );
+        })
+    
+         )}      
+    }
+      ,
 {
   dataField: "type",
   text: "Active?",
@@ -319,70 +427,6 @@ match ?
 </div>  
   ),
 }
-]:
-[
-  {
-    dataField: "_id",
-    text: "Id",
-    hidden: true,
-    editable: false,
-  },
-  {
-    dataField: "name",
-    text: "UserName",
-    sort: true,
-    headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold",background:"#858796",color:"white"};
-  },
-  },
-  {
-    dataField: "mobile",
-    text: "MobileNo",
-    sort: true,
-    headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold",background:"#858796",color:"white"};
-  },
-  }
-,
-  {
-    dataField: "type",
-    text: "Active?",
-    headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold",background:"#858796",color:"white"};
-  },
-    style: {
-      width: '70px',
-      textAlign:"center"
-    },
-    editable: false,
-    formatter: (cellContent, row) => (
-       (!row.delete && !row.status) ? <></> : <div className="banUserDiv">
-        <input type="checkbox" style={{display:"none"}}
-        id={row._id}
-        readOnly
-     checked={row.status}
-     onClick={() => {
-            this.dialog.show({
-              title: "Sure?",
-              body: "Are you sure Want to change Status?",
-              actions: [
-                Dialog.CancelAction(),
-                Dialog.OKAction(() => {
-                  this.changeStatus(row._id,row.status);
-                }),
-              ],
-              bsSize: "small",
-              onHide: (dialog) => {
-                dialog.hide();
-                console.log("closed by clicking background.");
-              },
-            });
-          }}
-   />
-   <label htmlFor={row._id}></label>
-</div>  
-    ),
-  }
 ];
 const defaultSorted = [{
   dataField: 'name',
@@ -436,7 +480,7 @@ const { SearchBar } = Search;
     return (
       <>
 <NotificationContainer />
-        <div style={{width:"100%", background: match ?  "#ecf0f1": "white"}}>
+        <div style={{width:"100%", background: matchtick ?  "#ecf0f1": "white"}}>
           <Container className="mt-3">
             {this.state.loading ? (
               <div></div>

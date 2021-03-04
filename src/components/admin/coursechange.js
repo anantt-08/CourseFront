@@ -177,17 +177,7 @@ onRemove(selectedList, removedItem,id) {
     })
    
 }
-getstatuss = async(id) =>{
-  const token = localStorage.getItem("token");
- let resultt=await axios
- .get(`http://localhost:9000/api/batches/findbyid/${id}`, {
-   headers: {
-     Authorization: token,
-   },
- })
- console.log(resultt.data.userlist.status,"Yipeeee")
- return resultt.data.userlist.status
-}
+
   UNSAFE_componentWillMount() {
     const token = localStorage.getItem("token");
     window.addEventListener('resize', this.updateDimensions);
@@ -243,9 +233,8 @@ getstatuss = async(id) =>{
     window.removeEventListener('resize', this.updateDimensions);
   }
   render() {
-console.log("y",this.state.optio)
     const matches= (this.state.width>765) ? true:false 
-    
+     const neww= (this.state.width>1280) ? true:false 
     const columns = matches ? [
       {
         dataField: "_id",
@@ -257,9 +246,9 @@ console.log("y",this.state.optio)
         dataField: "name",
         text: "UserName",
         sort: true,
-        
+        filter: textFilter(),
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white"};
+          return { fontWeight:"bold",background:"#858796",color:"white",width:"148px"};
       },
       },
       {
@@ -268,7 +257,7 @@ console.log("y",this.state.optio)
     
         sort: true,
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white" 
+          return { fontWeight:"bold",background:"#858796",color:"white" ,textAlign:"center"
 }
       },
       }
@@ -279,7 +268,7 @@ console.log("y",this.state.optio)
       
   filter: textFilter(),
       headerStyle: (colum, colIndex) => {
-        return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '320px' , wordWrap:'break-word'};
+        return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '280px' , wordWrap:'break-word'};
     },
       style: {
         width: '70px',
@@ -324,6 +313,17 @@ console.log("y",this.state.optio)
             />
              )
     }
+    ,
+      filterValue: (cell, row) => { return  (
+             
+        row.courseid.map((item) => {
+          return (
+               item.name
+          );
+        })
+    
+         )}      
+      
 
     }
     ,
@@ -333,11 +333,15 @@ console.log("y",this.state.optio)
       
   filter: textFilter(),
       headerStyle: (colum, colIndex) => {
-        return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '300px' , wordWrap:'break-word'};
+        return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap',minWidth:"260px", width: '260px' , wordWrap:'break-word'};
     },
-      style: {
-        textAlign:"center"
-      },
+    style: {
+      textAlign:"center",
+      fontStyle:"italic",
+      color:"brown",
+      fontWeight:"500"
+    },
+      
       editable: false,
       formatExtraData:this.state.optio,
       formatter: (cellContent, row,formatExtraData) =>{
@@ -356,19 +360,28 @@ console.log("y",this.state.optio)
           </Grid>
         </div>
              )
-    }
+    },
+    filterValue: (cell, row) => { return  (
+           
+      cell.map((item) => {
+        return (
+             item.name
+        );
+      })
+  
+       )}
+    
 
     }    ,
     {
       dataField: "status",
       text: "Current Status",
       
-  filter: textFilter(),
     //   headerStyle: (colum, colIndex) => {
     //     return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '300px' , wordWrap:'break-word'};
     // },
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white" 
+          return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap',minWidth:"220px", width: '220px' , wordWrap:'break-word' 
 }
       },
       style: {
@@ -405,22 +418,23 @@ console.log("y",this.state.optio)
     
   filter: textFilter(),
     headerStyle: (colum, colIndex) => {
-      return { justifyContent:"space-between",display:"flex",fontWeight:"bold",background:"#858796",color:"white"};
+      return { fontWeight:"bold",background:"#858796",color:"white",width:"148px"};
   },
   },
+  ,
   {
     dataField: "type",
     text: "Alloted Course",
+    
+filter: textFilter(),
     headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '320px' , wordWrap:'break-word'};
+      return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '280px' , wordWrap:'break-word'};
   },
     style: {
       width: '70px',
       textAlign:"center"
     },
     editable: false,
-    
-  filter: textFilter(),
     formatExtraData:this.state.optio,
     formatter: (cellContent, row,formatExtraData) =>{
     //   console.log(row.courseid,"MyMY")
@@ -459,22 +473,37 @@ console.log("y",this.state.optio)
           />
            )
   }
+  ,
+    filterValue: (cell, row) => { return  (
+           
+      row.courseid.map((item) => {
+        return (
+             item.name
+        );
+      })
+  
+       )}      
+    
 
   }
   ,
   {
     dataField: "batchname",
     text: "Alloted Batch",
+    
+filter: textFilter(),
     headerStyle: (colum, colIndex) => {
-      return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap', width: '300px' , wordWrap:'break-word'};
+      return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap',minWidth:"260px", width: '260px' , wordWrap:'break-word'};
   },
-    style: {
-      textAlign:"center"
-    },
+  style: {
+    textAlign:"center",
+    fontStyle:"italic",
+    color:"darkgreen",
+    fontWeight:"500"
+  },
+    
     editable: false,
     formatExtraData:this.state.optio,
-    
-  filter: textFilter(),
     formatter: (cellContent, row,formatExtraData) =>{
       return  (
         <div style={{ outline: "none" }}>
@@ -491,10 +520,45 @@ console.log("y",this.state.optio)
         </Grid>
       </div>
            )
+  },
+  filterValue: (cell, row) => { return  (
+         
+    cell.map((item) => {
+      return (
+           item.name
+      );
+    })
+
+     )}
+  
+
+  }    ,
+  {
+    dataField: "status",
+    text: "Current Status",
+  
+      headerStyle: (colum, colIndex) => {
+        return { fontWeight:"bold",background:"#858796",color:"white",textAlign:"center",'whiteSpace': 'nowrap',minWidth:"220px", width: '220px' , wordWrap:'break-word' 
+}
+    },
+    style: {
+      textAlign:"center"
+    },
+    editable: false,
+    formatter: (cellContent, row) =>{
+     
+      return  (
+        <div style={{ outline: "none" }}>
+        <Grid container spacing={1}>
+          {row.batchname.map((item) => {
+          return  <Status id={item.id} name={item.name}/>
+          })}
+        </Grid>
+      </div>
+           )
   }
 
-  }  
-
+  }   
     
 ];
 
@@ -539,7 +603,7 @@ const { SearchBar } = Search;
     return (
       <>
 <NotificationContainer />
-        <div style={{width:"100%", background: matches ?  "#ecf0f1": "white"}}>
+        <div style={{width:"100%", background: neww ?  "#ecf0f1": "white"}}>
           <Container className="mt-3">
             {this.state.loading ? (
               <div></div>
