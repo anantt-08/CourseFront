@@ -223,7 +223,7 @@ filter: textFilter(),
         text: "BirthDate",
         
         headerStyle: (colum, colIndex) => {
-          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '128px' , wordWrap:'break-word',};
+          return { fontWeight:"bold",background:"#858796",color:"white",'whiteSpace': 'nowrap', width: '138px' , wordWrap:'break-word',};
       },
       }
     ,

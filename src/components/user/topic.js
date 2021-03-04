@@ -49,13 +49,14 @@ export default class Topic extends Component{
     })
     res.data.user.sort();
     this.setState({ list: res.data.user });
-    console.log(this.state.list)
+  //  console.log(this.state.list)
     let dict={}  
     this.state.list.map((item)=>{
      let op= item.coursename+" "+item.week+" "+item.timing
       dict[op]=op  
     })
      this.setState({dictt:dict});
+     //console.log(dict)
      //alert(this.state.dictt)
      }
      catch(err){
@@ -96,7 +97,7 @@ catch(err){
   })
   }
   render() {
-//console.log(this.state.dictt)
+console.log(this.state.dictt,"hmm")
 //console.log(this.state.DATA)
 //console.log(this.props.id)
 const selectOptions =   this.state.dictt;
@@ -130,10 +131,10 @@ const selectOptions =   this.state.dictt;
           let arr=row.time.split(" ").slice(0, 3)
           let timee=row.time.split(" ").slice(3,)
           var yoho=[];
-          console.log(arr)
+        //  console.log(arr)
           timee=timee[0].split(":")
           
-          console.log(timee)
+        //  console.log(timee)
           if(timee[0]>12){
             yoho.push(12-parseInt(timee[0]))
             yoho.push(timee[1])
@@ -208,7 +209,7 @@ const selectOptions =   this.state.dictt;
         text: "BatchName"
         ,
         formatter: (cell,row )=>{
-        // console.log(cell)
+       //  console.log(cell)
         // {alert(cell)}
 
         return( selectOptions[cell] )

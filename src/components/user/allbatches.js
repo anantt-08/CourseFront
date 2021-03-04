@@ -6,7 +6,7 @@ import Dialog from "react-bootstrap-dialog";
 import { Spinner } from "react-bootstrap";
 import "../admin/user.css";
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
-import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { selectFilter,  textFilter  } from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from "react-bootstrap-table-next";
@@ -40,13 +40,13 @@ export default class Allbatch extends Component{
         }
       })
     this.setState({ names: resp.data.userlist });
-    console.log(this.state.names)
+   // console.log(this.state.names)
     let yoho={}  
     this.state.names.map((item)=>{
       yoho[item.name]=item.name  
     })
      this.setState({coursenames:yoho});
-     console.log(this.state.coursenames)
+    // console.log(this.state.coursenames)
      }
      catch(err){
       console.log(err)
@@ -77,6 +77,10 @@ export default class Allbatch extends Component{
  
   render() {
 const selectNames=this.state.coursenames;
+const selectOptions={
+  "Upcoming" : "Upcoming",
+   "Ongoing" : "Ongoing"
+}
       const matches= (this.state.width>750) ? true:false 
     const columns =  [
       {
@@ -103,15 +107,23 @@ const selectNames=this.state.coursenames;
     options: selectNames
   }),
         headerStyle: (colum, colIndex) => {
-          return { textAlign:"center",'whiteSpace': 'nowrap', width: '245px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
+          return { textAlign:"center",'whiteSpace': 'nowrap', width: '225px' , wordWrap:'break-word',fontWeight:"bold",background:"#858796",color:"white"};
       },
       },
       {
         dataField: "startdate",
         text: "StartDate",
+        sort:true,
         headerStyle: (colum, colIndex) => {
           return { textAlign:"center",fontWeight:"bold",background:"#858796",color:"white"};
-      }
+      }, sortFunc: (a, b, order, dataField) => {
+        if (order === 'asc') {
+         return new Date(b) - new Date(a);
+        }
+       else{
+        return new Date(a) - new Date(b);
+       }
+    }
       },
       {
         dataField: "timing",
@@ -129,19 +141,59 @@ const selectNames=this.state.coursenames;
     }
       },
      {
+        dataField: "duration",
+        text: "Batch Duration",        
+        filter: textFilter(),
+       
+  style:{
+    fontWeight:"bold"
+  },
+        headerStyle: (colum, colIndex) => {
+          return { textAlign:"center",fontWeight:"bold",'whiteSpace': 'nowrap', width: '200px' , wordWrap:'break-word',background:"#858796",color:"white"};
+      },
+        editable: false,
+        formatter: (cellContent, row) =>{
+          return  (
+             <div>
+             {row.duration} Months
+             </div>
+               )
+      }
+      }
+      ,
+     {
         dataField: "week",
-        text: "Batch Week Status"
-       ,
+        text: "Batch Week",
+        sort: true,
   style:{
     fontWeight:"bold"
   },
         headerStyle: (colum, colIndex) => {
           return { textAlign:"center",fontWeight:"bold",background:"#858796",color:"white"};
       },
+      },
+     {
+        dataField: "status",
+        text: "Batch Status"
+       ,
+  style:{
+    fontWeight:"bold"
+  },
+        headerStyle: (colum, colIndex) => {
+          return { textAlign:"center",fontWeight:"bold",'whiteSpace': 'nowrap', width: '200px' , wordWrap:'break-word',background:"#858796",color:"white"};
+      },  formatter: (cell,row )=>{
+        return( selectOptions[cell] )
+        },style:{
+          fontWeight:"bold"
+        }
+        ,
+  filter: selectFilter({
+    options: selectOptions
+  }),
       }
     ]
 const defaultSorted = [{
-  dataField: 'coursename',
+  dataField: 'startdate',
   order: 'asc'
 }];
 
