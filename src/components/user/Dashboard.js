@@ -20,7 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-
+import axios from "axios";
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
@@ -203,6 +203,9 @@ export default function DashboardUser(props) {
    }
  
    }
+   const changestatus  = (data) =>{
+    
+   }
   const updateWindowWidth = () => {
     if (window.innerWidth < 900) setOpen(false);
     else setOpen(true);
@@ -215,7 +218,16 @@ export default function DashboardUser(props) {
   }, [open]);
   
   useEffect(() => { 
-    checkStorage();  
+    checkStorage(); 
+    const token = localStorage.getItem("token");  
+    axios.get("http://localhost:9000/api/batches/find",{
+      headers: {
+        Authorization: token,
+      },
+    }).then((res)=>{
+      changestatus(res.data.userlist)
+    }).catch((err)=>{console.log(err)})
+    
     updateWindowWidth();
   }, [])
   return (

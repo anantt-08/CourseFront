@@ -116,8 +116,8 @@ export default function Showbatch()
             {rowData.status =="Upcoming" ? <> </> :
       rowData.status =="Ongoing" ? <>  <Toggle
       name="changeStatus"
-      defaultChecked={false}
-      onClick={() => {setShow(true);setbatchidyo(rowData._id) }} />
+      checked={false}
+      onChange={() => {setShow(true);setbatchidyo(rowData._id) }} />
  </> : <></> }         
 
       </>
@@ -142,7 +142,6 @@ axios.get("http://localhost:9000/api/batches/finnnnd",{
   }, 300);
 }).catch((err)=>{console.log(err)})
 }
-
 
 const handleSelect=(e)=>{
     setWeek(e)
@@ -182,6 +181,7 @@ return list.map(function(item){
 useEffect(function(){
 fetchData();
 fetchCategory();
+
 },[])    
 
     const handleSubmit=async(e)=>{
@@ -210,8 +210,21 @@ fetchCategory();
   if(!error)
   
   {
-    var d=new Date()
-      var e=new Date(d.setDate(d.getDate() - 1))
+      var current=new Date(new Date().toString().split(" ").slice(1, 4).join(" "))
+                 var d=new Date(date)
+              var neww=new Date(d.setMonth(d.getMonth() + parseInt(duration)))
+              var d = new Date(date)
+              var stateee;
+              if(current.valueOf() < d.valueOf()){
+    stateee="Upcoming"
+              }
+              else if((current.valueOf() >= d.valueOf()) && (current.valueOf() < neww.valueOf())){
+                stateee="Ongoing"
+              }
+            else{
+              stateee="Completed"
+      }     
+    var e=new Date()
        var lastt=((e.toString().split(" ").slice(1, 4).join(" ")))
     var body={coursename:coursename,
         timing:time,
@@ -219,7 +232,8 @@ fetchCategory();
         courseid:courseid,
         startdate:date,
       duration:duration,
-      lastdate:lastt
+      lastdate:lastt,
+      status:stateee
     }
     console.log(body)
  var result=await axios.put(`http://localhost:9000/api/batches/editbatch/${getBatchid}`,body,{
@@ -227,8 +241,9 @@ fetchCategory();
     Authorization: token,
   },
 })
-if(result)
-NotificationManager.success("Record Updated!!") 
+if(result){  
+  NotificationManager.success("Record Updated!!") 
+}
 else
 NotificationManager.error("Failed To update!!") 
   fetchData()
@@ -437,7 +452,7 @@ function Editable() {
               <div></div>
             ) : (
               <div style={{ position: 'fixed',zIndex:999, 
-                top: '48%',
+                top: '58%',
                                 left: '58%' ,  transform: 'translate(-50%, -50%)'
                               }}>
                 <Spinner animation="border" variant="danger" size="xl" />

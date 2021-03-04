@@ -22,9 +22,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-
+import axios from "axios";
 const drawerWidth = 240;
 
 
@@ -221,8 +220,62 @@ export default function Dashboard(props) {
     return () => window.removeEventListener('resize', updateWindowWidth);
   }, [open]);
   
+   const changestatus  = (data) =>{
+   	 const token = localStorage.getItem("token");  
+    data.map((item)=>{
+      var current=new Date(new Date().toString().split(" ").slice(1, 4).join(" "))
+      var  lastdate= new Date(item.lastdate)
+      var last=new Date().toString().split(" ").slice(1, 4).join(" ")
+      // console.log(current)
+      // console.log(lastdate)
+      if(lastdate.valueOf() > current.valueOf() || lastdate.valueOf() < current.valueOf()){
+                 var d=new Date(item.startdate)
+              var neww=new Date(d.setMonth(d.getMonth() + parseInt(item.duration)))
+              var d = new Date(item.startdate)
+              if(current.valueOf() < d.valueOf()){
+ axios.put(`http://localhost:9000/api/batches/changestatus/${item._id}`,{status:"Upcoming",lastdate:last},{
+      headers: {
+        Authorization: token,
+      },
+    }).then((res)=>{
+      console.log("yes upcomiing")
+    }).catch((err)=>{console.log(err)})
+              }
+              else if((current.valueOf() >= d.valueOf()) && (current.valueOf() < neww.valueOf())){
+       axios.put(`http://localhost:9000/api/batches/changestatus/${item._id}`,{status:"Ongoing",lastdate:last},{
+      headers: {
+        Authorization: token,
+      },
+    }).then((res)=>{
+      console.log("yes ongoing")
+    }).catch((err)=>{console.log(err)})
+  
+              }
+            else{
+               axios.put(`http://localhost:9000/api/batches/changestatus/${item._id}`,{status:"Completed",lastdate:last},{
+      headers: {
+        Authorization: token,
+      },
+    }).then((res)=>{
+      console.log("yes Completed")
+    }).catch((err)=>{console.log(err)}) 
+      }
+      }     
+
+      //  console.log(new Date(new Date().toString().split(" ").slice(1, 4).join(" ")))
+  })
+   }
   useEffect(() => { 
     checkStorage();  
+    const token = localStorage.getItem("token");  
+    axios.get("http://localhost:9000/api/batches/find",{
+      headers: {
+        Authorization: token,
+      },
+    }).then((res)=>{
+      changestatus(res.data.userlist)
+    }).catch((err)=>{console.log(err)})
+    
     updateWindowWidth();
   }, [])
   return (
