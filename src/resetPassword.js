@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
-export default class ResetPassword extends Component {
+import { withRouter } from "react-router";
+class ResetPassword extends Component {
     constructor(props) {
         super(props);
         this.state = { linkDate:"",email:"",password: "",confirm_password: "", errors: {} };
@@ -19,6 +20,7 @@ export default class ResetPassword extends Component {
         let currentDate = new Date();
         let differenceinMS = currentDate - date1
         if (differenceinMS > 3600000) {
+            console.log("yoo")
             NotificationManager.error("Link Not Valid link will be valid for 15 min.Please sent the reset link Again");
             this.props.history.push("/login");
         }
@@ -83,3 +85,5 @@ export default class ResetPassword extends Component {
         )
     }
 }
+
+export default withRouter(ResetPassword);
